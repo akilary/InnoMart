@@ -1,0 +1,63 @@
+<div class="modal" id="addressModal" role="dialog" aria-labelledby="addressModalHeader" aria-hidden="true">
+    <div class="modal__backdrop"></div>
+    <div class="modal__content">
+        <div class="modal__header">
+            <h2 class="modal__title" id="addressModalHeader">
+                <span class="material-icons">location_on</span>
+                Адрес доставки
+            </h2>
+            <button class="modal__close" data-modal-close aria-label="Закрыть окно редактирования доставки">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        
+        <div class="modal__body">
+            <form action="{{ url_for("user.profile") }}" method="post" class="modal__form">
+                {{ form.hidden_tag() }}
+
+                <div class="form__group">
+                    <label for="update-city" class="form__label">
+                        <span class="material-icons">location_city</span>
+                        Город:
+                    </label>
+                    {{ form.city(value=current_user.city or "", class="form__input") }}
+                </div>
+                
+                <div class="form__group">
+                    <label for="update-street" class="form__label">
+                        <span class="material-icons">signpost</span>
+                        Улица:
+                    </label>
+                    {{ form.street(value=current_user.street or "", class="form__input") }}
+                </div>
+                
+                <div class="form__group">
+                    <label for="update-postcode" class="form__label">
+                        <span class="material-icons">markunread_mailbox</span>
+                        Индекс:
+                    </label>
+                    {{ form.postcode(value=current_user.postcode or "", class="form__input") }}
+                </div>
+                
+                <div class="form__group">
+                    <label for="update-current-password" class="form__label">
+                        <span class="material-icons">vpn_key</span>
+                        Текущий пароль:
+                    </label>
+                    <div class="auth__password-wrapper">
+                        {{ form.current_password(class="form__input") }}
+                        <button type="button" class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
+                            <span class="material-icons">visibility</span>
+                        </button>
+                    </div>
+                    <small class="form__hint">Обязателен для сохранения любых изменений</small>
+                </div>
+                
+                <div class="modal__footer">
+                    {{ form.submit(class="button button--accent") }}
+                    <button type="button" class="product__button button--outline button--muted" data-modal-close>Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

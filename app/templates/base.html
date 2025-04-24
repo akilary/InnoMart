@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="InnoMart - ваш надежный интернет-магазин">
+    <meta name="keywords" content="магазин, онлайн покупки, товары">
+    <title>{% block title %}InnoMart{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+<header class="site-header">
+    <div class="main__container site-header__container">
+        <div class="site-header__logo">
+            <a href="{{ url_for("main.home") }}" class="site-header__logo-link">
+                <span class="site-header__logo-text">InnoMart</span>
+            </a>
+        </div>
+
+        <div class="site-header__actions">
+            <nav class="site-header__nav">
+                <a href="{{ url_for("main.catalog") }}" class="site-header__nav-item" aria-label="Каталог">
+                    <span class="material-icons site-header__nav-item-icon">menu</span>
+                    <span class="site-header__nav-item-text">Каталог</span>
+                </a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for("user.profile") }}" class="site-header__nav-item" aria-label="Профиль">
+                        <span class="material-icons site-header__nav-item-icon">person</span>
+                        <span class="site-header__nav-item-text">Профиль</span>
+                    </a>
+                {% else %}
+                    <a href="{{ url_for("auth.login") }}" class="site-header__nav-item" aria-label="Войти">
+                        <span class="material-icons site-header__nav-item-icon">login</span>
+                        <span class="site-header__nav-item-text">Войти</span>
+                    </a>
+                {% endif %}
+                <a href="#" class="site-header__nav-item site-header__nav-item--cart" aria-label="Корзина">
+                    <span class="material-icons site-header__nav-item-icon">shopping_cart</span>
+                    <span class="site-header__nav-item-text">Корзина</span>
+                    {# Todo: Добавить счетчик возле корзины #}
+                </a>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <div class="main__container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="main__container site-footer__container">
+        <div class="site-footer__sections">
+            <section class="footer__section">
+                <h3 class="footer__section-title">О нас</h3>
+                <ul class="footer__section-list">
+                    <li class="footer__section-list-item"><a href="{{ url_for("main.about") }}">О компании</a></li>
+                    <li class="footer__section-list-item"><a href="{{ url_for("main.team") }}">Наша команда</a></li>
+                    <li class="footer__section-list-item"><a href="#">Вакансии</a></li>
+                </ul>
+            </section>
+            <section class="footer__section">
+                <h3 class="footer__section-title">Клиентам</h3>
+                <ul class="footer__section-list">
+                    <li class="footer__section-list-item"><a href="#">Доставка</a></li>
+                    <li class="footer__section-list-item"><a href="#">Оплата</a></li>
+                    <li class="footer__section-list-item"><a href="#">Возврат и обмен</a></li>
+                    <li class="footer__section-list-item"><a href="#">Часто задаваемые вопросы</a></li>
+                </ul>
+            </section>
+            <section class="footer__section">
+                <h3 class="footer__section-title">Контакты</h3>
+                <ul class="footer__section-list">
+                    <li class="footer__section-list-item"><a href="{{ url_for("main.contacts") }}">Связаться с нами</a></li>
+                    <li class="footer__section-list-item">Телефон: <a href="tel:+77777777777">+7 (777) 777-77-77</a></li>
+                    <li class="footer__section-list-item">Email: <a href="#">support@innomart.ru</a>
+                    </li>
+                    <li class="footer__section-list-item"><span>Адрес: Караганда, ул. Бухар-Жырау, 9</span></li>
+                </ul>
+            </section>
+            <section class="footer__section">
+                <h3 class="footer__section-title">Мы в соцсетях</h3>
+                <ul class="footer__section-list">
+                    <li class="footer__section-list-item">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
+                            ВКонтакте
+                        </a>
+                    </li>
+                    <li class="footer__section-list-item">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                            Telegram
+                        </a>
+                    </li>
+                    <li class="footer__section-list-item">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            Instagram
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        <section class="footer__bottom">
+            <p class="footer__copyright">© {{ current_year }} InnoMart. Все права защищены.</p>
+            <p class="footer__legal">
+                <a href="#">Политика конфиденциальности</a> |
+                <a href="#">Условия использования</a>
+            </p>
+        </section>
+    </div>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

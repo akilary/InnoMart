@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="profile">
+        <div class="main__container profile__container">
+            <aside class="profile__sidebar">
+                <div class="profile__user">
+                    <div class="profile__user-avatar">
+                        <span class="material-icons profile__user-avatar-icon">account_circle</span>
+                    </div>
+                    <div class="profile__user-info">
+                        <h2 class="profile__user-name">{{ current_user.username }}</h2>
+                        <p class="profile__user-email">{{ current_user.email }}</p>
+                    </div>
+                </div>
+
+                <nav class="profile__nav">
+                    <button class="profile__nav-item profile__nav-item--active" data-section="overview">
+                        <span class="material-icons profile__nav-item-icon">dashboard</span>
+                        <span class="profile__nav-item-text">Обзор</span>
+                    </button>
+                    <button class="profile__nav-item" data-section="orders">
+                        <span class="material-icons profile__nav-item-icon">receipt_long</span>
+                        <span class="profile__nav-item-text">Мои заказы</span>
+                        {% if orders %}
+                            <span class="profile__nav-badge">{{ orders|length }}</span>
+                        {% endif %}
+                    </button>
+                    <button class="profile__nav-item" data-section="favorites">
+                        <span class="material-icons profile__nav-item-icon">favorite</span>
+                        <span class="profile__nav-item-text">Избранное</span>
+                        {% if wishlist_data %}
+                            <span class="profile__nav-badge">{{ wishlist_data|length }}</span>
+                        {% endif %}
+                    </button>
+                    <button class="profile__nav-item" data-section="settings">
+                        <span class="material-icons profile__nav-item-icon">settings</span>
+                        <span class="profile__nav-item-text">Настройки</span>
+                    </button>
+                </nav>
+
+                <div class="profile__support">
+                    <div class="profile__support-content">
+                        <h3 class="profile__support-title">
+                            <span class="material-icons profile__support-icon">headset_mic</span>
+                            Нужна помощь?
+                        </h3>
+                        <p class="profile__support-text">Наша поддержка на связи 24/7</p>
+                        <a href="{{ url_for("main.contacts") }}" class="profile__support-button">
+                            Написать в поддержку
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="profile__content">
+                <div class="profile__section profile__section--active" id="overview">
+                    <header class="profile__header">
+                        <h1 class="profile__header-title">Добро пожаловать, {{ current_user.username }}!</h1>
+                        <p class="profile__header-subtitle">Ваш личный кабинет</p>
+                    </header>
+
+                    <div class="profile__stats">
+                        <div class="profile__stat-card">
+                            <div class="profile__stat-icon">
+                                <span class="material-icons profile__stat-icon-icon">shopping_bag</span>
+                            </div>
+                            <div class="profile__stat-info">
+                                <span class="profile__stat-value">{{ orders|length if orders else 0 }}</span>
+                                <span class="profile__stat-label">Заказов</span>
+                            </div>
+                        </div>
+                        <div class="profile__stat-card">
+                            <div class="profile__stat-icon">
+                                <span class="material-icons profile__stat-icon-icon">favorite</span>
+                            </div>
+                            <div class="profile__stat-info">
+                                <span class="profile__stat-value">{{ wishlist_data|length if wishlist_data else 0 }}</span>
+                                <span class="profile__stat-label">В избранном</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile__quick-actions">
+                        <h2 class="profile__section-title">Быстрые действия</h2>
+                        <div class="profile__actions-grid">
+                            <a href="{{ url_for("main.catalog") }}" class="profile__action-card">
+                                <span class="material-icons profile__action-card-icon">store</span>
+                                <span class="profile__action-card-text">В каталог</span>
+                            </a>
+                            <button class="profile__action-card" data-modal-target="addressModal">
+                                <span class="material-icons profile__action-card-icon">edit_location</span>
+                                <span class="profile__action-card-text">Изменить адрес</span>
+                            </button>
+                            <button class="profile__action-card" data-modal-target="personalModal">
+                                <span class="material-icons profile__action-card-icon">edit</span>
+                                <span class="profile__action-card-text">Редактировать профиль</span>
+                            </button>
+                            <a href="#" class="profile__action-card">
+                                <span class="material-icons profile__action-card-icon">help</span>
+                                <span class="profile__action-card-text">Помощь</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="profile__recent-orders">
+                        <div class="profile__section-header">
+                            <h2 class="profile__section-title">Последние заказы</h2>
+                            <button class="profile__view-all" data-section="orders">
+                                Все заказы
+                                <span class="material-icons profile__view-all-icon">arrow_forward</span>
+                            </button>
+                        </div>
+                        {% if orders %}
+                            <div class="profile__orders-grid">
+                                {% for order in orders[:3] %}
+                                    <div class="profile__order-card">
+                                        <div class="profile__order-header">
+                                            <span class="profile__order-number">#{{ order.id }}</span>
+                                            <span class="profile__order-status profile__order-status--{{ normalize_status(order.status) }}">{{ order.status }}</span>
+                                        </div>
+                                        <div class="profile__order-info">
+                                            <p class="profile__order-date">{{ order.created_at.strftime('%d.%m.%Y') }}</p>
+                                            <p class="profile__order-total">{{ order.total_price }} ₸</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="profile__empty-state">
+                                <span class="material-icons profile__empty-state-icon">receipt_long</span>
+                                <p class="profile__empty-state-text">У вас пока нет заказов</p>
+                                <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                                    Перейти в каталог
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="profile__section" id="orders">
+                    <header class="profile__header">
+                        <h1 class="profile__header-title">Мои заказы</h1>
+                        <p class="profile__header-subtitle">История ваших покупок</p>
+                    </header>
+
+                    {% if orders %}
+                        <div class="profile__orders-list">
+                            {% for order in orders %}
+                                <div class="profile__order-item">
+                                    <div class="profile__order-main">
+                                        <div class="profile__order-header">
+                                            <span class="profile__order-number">#{{ order.id }}</span>
+                                            <!-- Убедитесь, что order.status нормализован (например, 'pending', 'completed') через normalize_status() -->
+                                            <span class="profile__order-status profile__order-status--{{ normalize_status(order.status) }}">{{ order.status }}</span>
+                                        </div>
+                                        <div class="profile__order-details">
+                                            <p class="profile__order-date">{{ order.created_at.strftime('%d.%m.%Y') }}</p>
+                                            <p class="profile__order-total">{{ order.total_price }} ₸</p>
+                                        </div>
+                                    </div>
+                                    <button class="profile__order-toggle" aria-expanded="false" aria-controls="order-details-{{ order.id }}">
+                                        <span class="material-icons profile__order-toggle-icon">expand_more</span>
+                                    </button>
+                                    <div id="order-details-{{ order.id }}" class="profile__order-details-content" hidden>
+                                        <p>Детали заказа #{{ order.id }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="profile__empty-state">
+                            <span class="material-icons profile__empty-state-icon">receipt_long</span>
+                            <p class="profile__empty-state-text">У вас пока нет заказов</p>
+                            <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                                Перейти в каталог
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="profile__section" id="favorites">
+                    <div class="profile__header">
+                        <h1 class="profile__header-title">Избранное</h1>
+                        <p class="profile__header-subtitle">Товары, которые вам понравились</p>
+                    </div>
+
+                    {% if wishlist_data %}
+                        <div class="profile__wishlist-grid">
+                            {% for item in wishlist_data %}
+                                <div class="product-card">
+                                    <div class="product-card__img-wrapper">
+                                        <img src="{{ item.image }}" alt="{{ item.name }}" class="product-card__img">
+                                    </div>
+                                    <div class="product-card__body">
+                                        <h3 class="product-card__title">{{ item.name }}</h3>
+                                        <p class="product-card__price">{{ item.price }} ₸</p>
+                                    </div>
+                                    <div class="product-card__actions">
+                                        <button class="product-card__action-button product-card__action-button--favorite product-card__action-button--active" data-product-id="{{ item.id }}">
+                                            <span class="material-icons product-card__action-button-icon">favorite</span>
+                                        </button>
+                                        <button class="product-card__action-button product-card__action-button--remove" data-product-id="{{ item.id }}">
+                                            <span class="material-icons product-card__action-button-icon">close</span>
+                                        </button>
+                                        <button class="product-card__action-button product-card__action-button--cart" data-product-id="{{ item.id }}">
+                                            <span class="material-icons product-card__action-button-icon">shopping_cart</span>
+                                            В корзину
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="profile__empty-state">
+                            <span class="material-icons profile__empty-state-icon">favorite</span>
+                            <p class="profile__empty-state-text">В избранном пока пусто</p>
+                            <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                                Перейти в каталог
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="profile__section" id="settings">
+                    <header class="profile__header">
+                        <h1 class="profile__header-title">Настройки</h1>
+                        <p class="profile__header-subtitle">Управление вашим аккаунтом</p>
+                    </header>
+
+                    <div class="profile__settings-grid">
+                        <div class="profile__settings-card">
+                            <div class="profile__settings-header">
+                                <h2 class="profile__settings-title">Личные данные</h2>
+                                <button class="profile__settings-edit" data-modal-target="personalModal">
+                                    <span class="material-icons profile__settings-edit-icon">edit</span>
+                                </button>
+                            </div>
+                            <div class="profile__settings-content">
+                                <dl class="profile__settings-list">
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Email</dt>
+                                        <dd class="profile__settings-description">{{ current_user.email }}</dd>
+                                    </div>
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Имя</dt>
+                                        <dd class="profile__settings-description">{{ current_user.first_name }}</dd>
+                                    </div>
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Телефон</dt>
+                                        <dd class="profile__settings-description">{{ current_user.phone or "Не указан" }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="profile__settings-card">
+                            <div class="profile__settings-header">
+                                <h2 class="profile__settings-title">Адрес доставки</h2>
+                                <button class="profile__settings-edit" data-modal-target="addressModal">
+                                    <span class="material-icons profile__settings-edit-icon">edit</span>
+                                </button>
+                            </div>
+                            <div class="profile__settings-content">
+                                <dl class="profile__settings-list">
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Город</dt>
+                                        <dd class="profile__settings-description">{{ current_user.city or "Не указан" }}</dd>
+                                    </div>
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Улица</dt>
+                                        <dd class="profile__settings-description">{{ current_user.street or "Не указана" }}</dd>
+                                    </div>
+                                    <div class="profile__settings-item">
+                                        <dt class="profile__settings-term">Индекс</dt>
+                                        <dd class="profile__settings-description">{{ current_user.postal_code or "Не указан" }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="profile__settings-card">
+                            <div class="profile__settings-header">
+                                <h2 class="profile__settings-title">Безопасность</h2>
+                            </div>
+                            <div class="profile__settings-content">
+                                <button class="profile__settings-button">
+                                    <span class="material-icons profile__settings-button-icon">lock</span>
+                                    <span class="profile__settings-button-text">Изменить пароль</span>
+                                </button>
+                                <button class="profile__settings-button">
+                                    <span class="material-icons profile__settings-button-icon">security</span>
+                                    <span class="profile__settings-button-text">Двухфакторная аутентификация</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="profile__settings-card">
+                            <div class="profile__settings-header">
+                                <h2 class="profile__settings-title">Уведомления</h2>
+                            </div>
+                            <div class="profile__settings-content">
+                                <label class="profile__settings-toggle" for="email-notifications">
+                                    <input type="checkbox" id="email-notifications" checked>
+                                    <span class="profile__settings-toggle-switch"></span>
+                                    <span class="profile__settings-toggle-label">Email-уведомления</span>
+                                </label>
+                                <label class="profile__settings-toggle" for="sms-notifications">
+                                    <input type="checkbox" id="sms-notifications" checked>
+                                    <span class="profile__settings-toggle-switch"></span>
+                                    <span class="profile__settings-toggle-label">SMS-уведомления</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    {% include "personal_modal.html" %}
+    {% include "address_modal.html" %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/wishlist.js') }}"></script>
+{% endblock %}

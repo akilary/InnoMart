@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Вход - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
+{% endblock %}
+
+{% block content %}
+    <section class="auth">
+        <div class="main__container auth__container">
+            <h2 class="auth__title">Вход в аккаунт</h2>
+            <form action="{{ url_for("auth.login") }}" method="post" class="auth__form">
+                {{ form.hidden_tag() }}
+
+                <div class="auth__form-group">
+                    <label for="login-username" class="auth__label">Email или имя пользователя:</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.username.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-group">
+                    <label for="login-password" class="auth__label">Пароль:</label>
+                    <div class="auth__password-wrapper">
+                        {{ form.password }}
+                        <button type="button" class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
+                            <span class="material-icons auth__password-toggle-icon">visibility_off</span>
+                        </button>
+                    </div>
+                    {% if form.password.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.password.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-options">
+                    {{ form.submit }}
+                    <a href="#" class="auth__link">Забыли пароль?</a>
+                </div>
+            </form>
+
+            <p class="auth__switch">
+                Нет аккаунта? <a href="{{ url_for("auth.register") }}" class="auth__link">Зарегистрируйтесь!</a>
+            </p>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for("static", filename="js/auth.js") }}"></script>
+{% endblock %}

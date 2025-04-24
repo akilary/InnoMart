@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
+{% endblock %}
+
+{% block content %}
+    <section class="auth">
+        <div class="main__container auth__container">
+            <h2 class="auth__title">Создание аккаунта</h2>
+            <form action="{{ url_for("auth.register") }}" method="post" class="auth__form">
+                {{ form.hidden_tag() }}
+
+                <div class="auth__form-group">
+                    <label for="register-email" class="auth__label">Email:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.email.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-group">
+                    <label for="register-username" class="auth__label">Имя пользователя:</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.username.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-group">
+                    <label for="register-password" class="auth__label">Пароль:</label>
+                    <div class="auth__password-wrapper">
+                        {{ form.password }}
+                        <button type="button" class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
+                            <span class="material-icons auth__password-toggle-icon">visibility_off</span>
+                        </button>
+                    </div>
+                    {% if form.password.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.password.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-group">
+                    <label for="register-confirm-password" class="auth__label">Подтверждение пароля:</label>
+                    <div class="auth__password-wrapper">
+                        {{ form.confirm_password }}
+                        <button class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
+                            <span class="material-icons auth__password-toggle-icon">visibility_off</span>
+                        </button>
+                    </div>
+                    {% if form.confirm_password.errors %}
+                        <ul class="auth__error-list">
+                            {% for error in form.confirm_password.errors %}
+                                <li class="auth__error">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="auth__form-options">
+                    {{ form.submit }}
+                </div>
+            </form>
+            <p class="auth__switch">
+                Есть аккаунт? <a href="{{ url_for("auth.login") }}" class="auth__link">Войдите!</a>
+            </p>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for("static", filename="js/auth.js") }}"></script>
+{% endblock %}

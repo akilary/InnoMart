@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/choices/choices.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/catalog.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/product_card.css") }}">
+{% endblock %}
+
+{% block content %}
+    <section class="catalog">
+        <div class="main__container catalog__container">
+            <h1 class="catalog__title">Каталог товаров</h1>
+
+            <div class="catalog__search" role="search">
+                <input type="text"
+                       id="catalog-search"
+                       class="search-input"
+                       placeholder="Поиск по товарам..."
+                       aria-label="Поиск по товарам">
+            </div>
+
+            <div class="catalog__filters-toggle">
+                <button type="button"
+                        id="catalog-toggle-filters"
+                        class="catalog__filters-toggle-button">
+                    <span class="material-icons catalog__filters-toggle-icon">close</span>
+                    <span id="toggle-text" class="catalog__filters-toggle-text">Фильтры</span>
+                </button>
+            </div>
+
+            <div id="catalog-filters" class="catalog__filters" aria-labelledby="catalog-toggle-filters">
+                <form id="filter-form" class="catalog__filter-form" aria-label="Фильтры товаров">
+                    <div class="catalog__filter">
+                        <h3 class="catalog__filter-title">Цена</h3>
+                        <div class="catalog__filter-price">
+                            <div class="catalog__filter-price-item">
+                                <input type="number"
+                                       id="price-min"
+                                       name="price_min"
+                                       class="catalog__filter-price-input"
+                                       placeholder="0"
+                                       min="0"
+                                       aria-label="Минимальная цена">
+                            </div>
+                            <div class="catalog__filter-price-item">
+                                <input type="number"
+                                       id="price-max"
+                                       name="price_max"
+                                       class="catalog__filter-price-input"
+                                       placeholder="999999"
+                                       min="0"
+                                       aria-label="Максимальная цена">
+                            </div>
+                        </div>
+                    </div>
+
+                    {# TODO: Подключить Choices.js для select #}
+                    <div class="catalog__filter">
+                        <h3 class="catalog__filter-title" id="sort-heading">Сортировка</h3>
+                        <select id="filter-select"
+                                name="sort_by"
+                                class="catalog__filter-select"
+                                aria-labelledby="sort-heading"
+                                aria-label="Варианты сортировки">
+                            <option value="" selected disabled>Выберите вариант:</option>
+                            <option value="price_asc">Сначала дешевле</option>
+                            <option value="price_desc">Сначала дороже</option>
+                            <option value="new">Сначала новые</option>
+                            <option value="discount">По размеру скидки</option>
+                        </select>
+                    </div>
+
+                    <div class="catalog__filter">
+                        <h3 class="catalog__filter-title">Наличие</h3>
+                        <div class="catalog__filter-options">
+                            <label class="catalog__filter-option">
+                                <input type="checkbox"
+                                       name="in_stock"
+                                       class="catalog__filter-checkbox"
+                                       value="true"
+                                       aria-label="Товары в наличии">
+                                <span>В наличии</span>
+                            </label>
+                            <label class="catalog__filter-option">
+                                <input type="checkbox"
+                                       name="discount"
+                                       class="catalog__filter-checkbox"
+                                       value="true"
+                                       aria-label="Товары со скидкой">
+                                <span>Со скидкой</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="catalog__categories">
+                        <h3 class="catalog__filter-title">Категории</h3>
+                        <div class="catalog__categories-list">
+                            <label for="category-3d" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-3d"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="3D-печать">
+                                <span class="material-icons catalog__category-icon">3d_rotation</span>
+                                3D-печать
+                            </label>
+
+                            <label for="category-electronics" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-electronics"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Электроника">
+                                <span class="material-icons catalog__category-icon">memory</span>
+                                Электроника
+                            </label>
+
+
+                            <label for="category-robotics" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-robotics"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Робототехника">
+                                <span class="material-icons catalog__category-icon">smart_toy</span>
+                                Робототехника
+                            </label>
+
+
+                            <label for="category-materials" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-materials"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Материалы">
+                                <span class="material-icons catalog__category-icon">layers</span>
+                                Материалы
+                            </label>
+
+                            <label for="category-tools" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-tools"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Инструменты">
+                                <span class="material-icons catalog__category-icon">build</span>
+                                Инструменты
+                            </label>
+
+                            <label for="category-optics" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-optics"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Оптика">
+                                <span class="material-icons catalog__category-icon">visibility</span>
+                                Оптика
+                            </label>
+
+                            <label for="category-programmable" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-programmable"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Программируемые устройства">
+                                <span class="material-icons catalog__category-icon">developer_board</span>
+                                Программируемые устройства
+                            </label>
+
+                            <label for="category-mechanics" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-mechanics"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Механика и крепеж">
+                                <span class="material-icons catalog__category-icon">precision_manufacturing</span>
+                                Механика и крепеж
+                            </label>
+
+                            <label for="category-energy" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-energy"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Энергетика">
+                                <span class="material-icons catalog__category-icon">bolt</span>
+                                Энергетика
+                            </label>
+
+                            <label for="category-models" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-models"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Стендовые модели и DIY-наборы">
+                                <span class="material-icons catalog__category-icon">toys</span>
+                                Стендовые модели и DIY-наборы
+                            </label>
+
+                            <label for="category-consumables" class="catalog__category">
+                                <input type="checkbox"
+                                       id="category-consumables"
+                                       name="categories"
+                                       class="catalog__category-checkbox"
+                                       value="Расходные материалы">
+                                <span class="material-icons catalog__category-icon">inventory_2</span>
+                                Расходные материалы
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="catalog__filter-buttons">
+                        <button type="submit"
+                                id="apply-filters"
+                                class="catalog__filter-button catalog__filter-button--apply">
+                            <span class="material-icons catalog__filter-button-icon"
+                                  aria-hidden="true">filter_alt</span>
+                            Применить фильтры
+                        </button>
+                        <button type="button"
+                                id="reset-filters"
+                                class="catalog__filter-button catalog__filter-button--reset">
+                            <span class="material-icons catalog__filter-button-icon" aria-hidden="true">refresh</span>
+                            Сбросить фильтры
+                        </button>
+                        <p id="products-count" class="catalog__count">
+                            Найдено: <span class="catalog__count-number">0</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="catalog__cards-wrapper">
+                <div id="catalog-loader" class="catalog__loader" style="display: none;" role="status">
+                    <span class="catalog__loader-spinner" aria-hidden="true"></span>
+                    <span>Загрузка товаров...</span>
+                </div>
+                <div id="products-container" class="catalog__cards" role="region" aria-label="Список товаров">
+                    {# Карточки товара загружаются сюда через JS #}
+                </div>
+            </div>
+
+            <div class="catalog__load-more">
+                <button type="button"
+                        id="load-more"
+                        class="catalog__load-more-button--show"
+                        aria-label="Загрузить больше товаров">
+                    <span class="material-icons catalog__load-more-button-icon" aria-hidden="true">expand_more</span>
+                    Загрузить ещё
+                </button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='lib/choices/choices.min.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/catalog.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/wishlist.js') }}"></script>
+{% endblock %}

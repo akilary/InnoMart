@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Наша команда - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/team.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section class="team-section">
+        <div class="main__container">
+            <header class="team__header">
+                <h1 class="team__title">Наша команда</h1>
+                <p class="team__subtitle"><strong>Люди, которые делают InnoMart возможным</strong></p>
+            </header>
+
+            <div class="team__content">
+                <div class="team__intro-card">
+                    <div class="team__intro-card-body">
+                        <p class="team__text">
+                            Мы — команда энтузиастов, объединённых любовью к инновациям и желанием помочь каждому воплотить свои
+                            идеи. От подбора материалов до поддержки клиентов — мы здесь, чтобы ваши проекты стали реальностью.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="team__members">
+                    <!-- Член команды 1 -->
+                    <div class="team__member-card">
+                        <div class="team__member-avatar">
+                            <span class="material-icons">person</span>
+                        </div>
+                        <div class="team__member-info">
+                            <h3 class="team__member-name">Анна Иванова</h3>
+                            <p class="team__member-role">Основатель и руководитель</p>
+                            <p class="team__member-bio">
+                                Анна — инженер с 10-летним опытом в разработке продуктов. Она основала InnoMart, чтобы сделать
+                                редкие материалы доступными для всех.
+                            </p>
+                            <div class="team__member-social">
+                                <a href="#" class="team__social-link" aria-label="LinkedIn">
+                                    <span class="material-icons">link</span>
+                                </a>
+                                <a href="#" class="team__social-link" aria-label="Email">
+                                    <span class="material-icons">email</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Член команды 2 -->
+                    <div class="team__member-card">
+                        <div class="team__member-avatar">
+                            <span class="material-icons">person</span>
+                        </div>
+                        <div class="team__member-info">
+                            <h3 class="team__member-name">Максим Петров</h3>
+                            <p class="team__member-role">Менеджер по закупкам</p>
+                            <p class="team__member-bio">
+                                Максим отвечает за поиск уникальных материалов по всему миру. Его цель — чтобы у вас всегда был
+                                выбор лучших решений.
+                            </p>
+                            <div class="team__member-social">
+                                <a href="#" class="team__social-link" aria-label="LinkedIn">
+                                    <span class="material-icons">link</span>
+                                </a>
+                                <a href="#" class="team__social-link" aria-label="Email">
+                                    <span class="material-icons">email</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Член команды 3 -->
+                    <div class="team__member-card">
+                        <div class="team__member-avatar">
+                            <span class="material-icons">person</span>
+                        </div>
+                        <div class="team__member-info">
+                            <h3 class="team__member-name">Ольга Смирнова</h3>
+                            <p class="team__member-role">Специалист по поддержке</p>
+                            <p class="team__member-bio">
+                                Ольга помогает клиентам с выбором материалов и решает любые вопросы. Её девиз: "Нет задачи,
+                                которую нельзя решить!"
+                            </p>
+                            <div class="team__member-social">
+                                <a href="#" class="team__social-link" aria-label="LinkedIn">
+                                    <span class="material-icons">link</span>
+                                </a>
+                                <a href="#" class="team__social-link" aria-label="Email">
+                                    <span class="material-icons">email</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team__cta-card">
+                    <h2 class="team__cta-title">
+                        <span class="material-icons">work</span>
+                        Хотите стать частью команды?
+                    </h2>
+                    <p class="team__text">
+                        Мы всегда в поиске талантливых людей, готовых разделить нашу миссию.
+                    </p>
+                    <div class="team__cta-actions">
+                        <a href="#" class="product__button button--primary">
+                            <span class="material-icons">work_outline</span>
+                            Открытые вакансии
+                        </a>
+                        <a href="{{ url_for('main.contacts') }}" class="product__button button--outline">
+                            <span class="material-icons">mail</span>
+                            Связаться с нами
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
