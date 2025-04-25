@@ -65,6 +65,7 @@
                             <label for="quantity" class="product__quantity-label">Количество:</label>
                             <div class="product__quantity-control">
                                 <button type="button"
+                                        id="decrease-quantity"
                                         class="product__quantity-button product__quantity-button--decrease"
                                         aria-label="Уменьшить количество">
                                     <span class="material-icons product__quantity-button-icon">remove</span>
@@ -77,6 +78,7 @@
                                        min="1"
                                        max="{{ product.stock }}">
                                 <button type="button"
+                                        id="increase-quantity"
                                         class="product__quantity-button product__quantity-button--increase"
                                         aria-label="Увеличить количество">
                                     <span class="material-icons product__quantity-button-icon">add</span>

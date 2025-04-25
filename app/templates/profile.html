@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}Профиль - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/profile.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/modal.css") }}">
 {% endblock %}
 
 {% block content %}
@@ -103,7 +103,7 @@
                                 <span class="material-icons profile__action-card-icon">edit</span>
                                 <span class="profile__action-card-text">Редактировать профиль</span>
                             </button>
-                            <a href="#" class="profile__action-card">
+                            <a href="{{ url_for("main.contacts") }}" class="profile__action-card">
                                 <span class="material-icons profile__action-card-icon">help</span>
                                 <span class="profile__action-card-text">Помощь</span>
                             </a>
@@ -137,7 +137,7 @@
                             <div class="profile__empty-state">
                                 <span class="material-icons profile__empty-state-icon">receipt_long</span>
                                 <p class="profile__empty-state-text">У вас пока нет заказов</p>
-                                <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                                <a href="{{ url_for("main.catalog") }}" class="profile__empty-action">
                                     Перейти в каталог
                                 </a>
                             </div>
@@ -158,7 +158,6 @@
                                     <div class="profile__order-main">
                                         <div class="profile__order-header">
                                             <span class="profile__order-number">#{{ order.id }}</span>
-                                            <!-- Убедитесь, что order.status нормализован (например, 'pending', 'completed') через normalize_status() -->
                                             <span class="profile__order-status profile__order-status--{{ normalize_status(order.status) }}">{{ order.status }}</span>
                                         </div>
                                         <div class="profile__order-details">
@@ -166,10 +165,12 @@
                                             <p class="profile__order-total">{{ order.total_price }} ₸</p>
                                         </div>
                                     </div>
-                                    <button class="profile__order-toggle" aria-expanded="false" aria-controls="order-details-{{ order.id }}">
+                                    <button class="profile__order-toggle" aria-expanded="false"
+                                            aria-controls="order-details-{{ order.id }}">
                                         <span class="material-icons profile__order-toggle-icon">expand_more</span>
                                     </button>
-                                    <div id="order-details-{{ order.id }}" class="profile__order-details-content" hidden>
+                                    <div id="order-details-{{ order.id }}" class="profile__order-details-content"
+                                         hidden>
                                         <p>Детали заказа #{{ order.id }}</p>
                                     </div>
                                 </div>
@@ -179,7 +180,7 @@
                         <div class="profile__empty-state">
                             <span class="material-icons profile__empty-state-icon">receipt_long</span>
                             <p class="profile__empty-state-text">У вас пока нет заказов</p>
-                            <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                            <a href="{{ url_for("main.catalog") }}" class="profile__empty-action">
                                 Перейти в каталог
                             </a>
                         </div>
@@ -204,13 +205,16 @@
                                         <p class="product-card__price">{{ item.price }} ₸</p>
                                     </div>
                                     <div class="product-card__actions">
-                                        <button class="product-card__action-button product-card__action-button--favorite product-card__action-button--active" data-product-id="{{ item.id }}">
+                                        <button class="product-card__action-button product-card__action-button--favorite product-card__action-button--active"
+                                                data-product-id="{{ item.id }}">
                                             <span class="material-icons product-card__action-button-icon">favorite</span>
                                         </button>
-                                        <button class="product-card__action-button product-card__action-button--remove" data-product-id="{{ item.id }}">
+                                        <button class="product-card__action-button product-card__action-button--remove"
+                                                data-product-id="{{ item.id }}">
                                             <span class="material-icons product-card__action-button-icon">close</span>
                                         </button>
-                                        <button class="product-card__action-button product-card__action-button--cart" data-product-id="{{ item.id }}">
+                                        <button class="product-card__action-button product-card__action-button--cart"
+                                                data-product-id="{{ item.id }}">
                                             <span class="material-icons product-card__action-button-icon">shopping_cart</span>
                                             В корзину
                                         </button>
@@ -222,7 +226,7 @@
                         <div class="profile__empty-state">
                             <span class="material-icons profile__empty-state-icon">favorite</span>
                             <p class="profile__empty-state-text">В избранном пока пусто</p>
-                            <a href="{{ url_for('main.catalog') }}" class="profile__empty-action">
+                            <a href="{{ url_for("main.catalog") }}" class="profile__empty-action">
                                 Перейти в каталог
                             </a>
                         </div>
@@ -251,7 +255,7 @@
                                     </div>
                                     <div class="profile__settings-item">
                                         <dt class="profile__settings-term">Имя</dt>
-                                        <dd class="profile__settings-description">{{ current_user.first_name }}</dd>
+                                        <dd class="profile__settings-description">{{ current_user.username }}</dd>
                                     </div>
                                     <div class="profile__settings-item">
                                         <dt class="profile__settings-term">Телефон</dt>
@@ -295,12 +299,17 @@
                                     <span class="material-icons profile__settings-button-icon">lock</span>
                                     <span class="profile__settings-button-text">Изменить пароль</span>
                                 </button>
-                                <button class="profile__settings-button">
-                                    <span class="material-icons profile__settings-button-icon">security</span>
-                                    <span class="profile__settings-button-text">Двухфакторная аутентификация</span>
+                                <button class="profile__settings-button profile__settings-delete-account">
+                                    <span class="material-icons profile__settings-button-icon">delete_forever</span>
+                                    <span class="profile__settings-button-text">Удалить аккаунт</span>
+                                </button>
+                                <button class="profile__settings-button profile__settings-logout">
+                                    <span class="material-icons profile__settings-button-icon">logout</span>
+                                    <span class="profile__settings-button-text">Выход</span>
                                 </button>
                             </div>
                         </div>
+
 
                         <div class="profile__settings-card">
                             <div class="profile__settings-header">
@@ -324,12 +333,9 @@
             </section>
         </div>
     </section>
-
-    {% include "personal_modal.html" %}
-    {% include "address_modal.html" %}
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/wishlist.js') }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/profile.js") }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/wishlist.js") }}"></script>
 {% endblock %}

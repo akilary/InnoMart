@@ -14,7 +14,7 @@
     border-radius: 16px;
     box-shadow: 0 8px 24px var(--color-shadow);
     margin-bottom: var(--spacing-xl);
-    color: var(--color-white);
+    color: var(--color-surface);
     position: relative;
     overflow: hidden;
     text-align: center;
@@ -67,12 +67,12 @@
 
 /* Card Styles */
 .contact__card {
-    background: var(--color-white);
+    background: var(--color-surface);
     border-radius: 16px;
     box-shadow: 0 4px 16px var(--color-shadow);
     overflow: hidden;
     transition: all var(--transition-base) ease;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border-default);
     display: flex;
     flex-direction: column;
     margin-bottom: var(--spacing-xl);
@@ -94,7 +94,7 @@
     align-items: center;
     padding: var(--spacing-lg);
     background: linear-gradient(to right, rgba(94, 129, 172, 0.1), rgba(46, 52, 64, 0.05));
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border-default);
 }
 
 .contact__card-title {
@@ -154,7 +154,7 @@
 
 .contact-info__label {
     font-size: var(--font-size-sm);
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     margin: 0 0 var(--spacing-xs);
     font-weight: 500;
 }
@@ -191,12 +191,12 @@
 
 .contact-form__input {
     padding: var(--spacing-md);
-    border: 2px solid var(--color-border);
+    border: 2px solid var(--color-border-default);
     border-radius: 8px;
     font-size: var(--font-size-md);
     transition: all var(--transition-fast) ease;
     width: 100%;
-    background: var(--color-white);
+    background: var(--color-surface);
 }
 
 .contact-form__input:focus {
@@ -220,7 +220,7 @@
 
 .contact-form__note {
     font-size: var(--font-size-sm);
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     text-align: center;
     margin-top: var(--spacing-lg);
 }

@@ -14,7 +14,7 @@
     border-radius: 16px;
     box-shadow: 0 8px 24px var(--color-shadow);
     margin-bottom: var(--spacing-xl);
-    color: var(--color-white);
+    color: var(--color-surface);
     position: relative;
     overflow: hidden;
     text-align: center;
@@ -60,12 +60,12 @@
 
 /* Intro Card */
 .team__intro-card {
-    background: var(--color-white);
+    background: var(--color-surface);
     border-radius: 16px;
     box-shadow: 0 4px 16px var(--color-shadow);
     overflow: hidden;
     transition: all var(--transition-base) ease;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border-default);
 }
 
 .team__intro-card:hover {
@@ -98,12 +98,12 @@
 
 /* Member Card */
 .team__member-card {
-    background: var(--color-white);
+    background: var(--color-surface);
     border-radius: 16px;
     box-shadow: 0 4px 16px var(--color-shadow);
     overflow: hidden;
     transition: all var(--transition-base) ease;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border-default);
     display: flex;
     flex-direction: column;
 }
@@ -137,7 +137,7 @@
 
 .team__member-avatar .material-icons {
     font-size: 3rem;
-    color: var(--color-white);
+    color: var(--color-surface);
 }
 
 .team__member-info {
@@ -184,14 +184,14 @@
 
 .team__social-link:hover {
     background: var(--color-accent);
-    color: var(--color-white);
+    color: var(--color-surface);
     transform: translateY(-2px);
 }
 
 /* CTA Card */
 .team__cta-card {
     background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-    color: var(--color-white);
+    color: var(--color-surface);
     border-radius: 16px;
     padding: var(--spacing-xl);
     box-shadow: 0 8px 24px var(--color-shadow);
@@ -229,7 +229,7 @@
 }
 
 .team__cta-card .team__text {
-    color: var(--color-white);
+    color: var(--color-surface);
     opacity: 0.9;
     position: relative;
     z-index: 2;
@@ -257,7 +257,7 @@
 }
 
 .team__cta-actions .hero__button--action {
-    background: var(--color-white);
+    background: var(--color-surface);
     color: var(--color-primary);
 }
 
@@ -267,12 +267,12 @@
 }
 
 .team__cta-actions .hero__button--info {
-    border: 2px solid var(--color-white);
-    color: var(--color-white);
+    border: 2px solid var(--color-surface);
+    color: var(--color-surface);
 }
 
 .team__cta-actions .hero__button--info:hover {
-    background: var(--color-white);
+    background: var(--color-surface);
     color: var(--color-primary);
     transform: translateY(-2px);
 }
