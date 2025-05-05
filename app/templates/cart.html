@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Корзина - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/cart.css") }}">
+{% endblock %}
+
+{% block content %}
+    <section class="cart">
+        <div class="main__container cart__container">
+            <h1 class="cart__title">Корзина</h1>
+
+            <div class="cart__content">
+                <div class="cart__items">
+                    {% if user_cart %}
+                        <div id="cart-items-container" class="cart__items-container">
+                            {% for item in user_cart %}
+                                <div class="cart__item" data-product-id="{{ item.id }}">
+                                    <div class="cart__item-image-container">
+                                        <img src="{{ item.image_url }}" alt="{{ item.name }}" class="cart__item-image">
+                                    </div>
+                                    <div class="cart__item-details">
+                                        <div class="cart__item-info">
+                                            <h3 class="cart__item-title">{{ item.name }}</h3>
+                                        </div>
+                                        <div class="cart__item-pricing">
+                                            <div class="cart__item-price-container">
+                                                <span class="cart__item-price">{{ item.price }} ₸</span>
+                                            </div>
+                                            <div class="cart__item-quantity">
+                                                <button class="cart__quantity-button cart__quantity-decrease"
+                                                        aria-label="Уменьшить количество">
+                                                    <span class="material-icons cart__quantity-icon">remove</span>
+                                                </button>
+                                                <input type="number" class="cart__quantity-input" value="{{ item.quantity }}" min="1" max="99"
+                                                       aria-label="Количество товара">
+                                                <button class="cart__quantity-button cart__quantity-increase"
+                                                        aria-label="Увеличить количество">
+                                                    <span class="material-icons cart__quantity-icon">add</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="cart__item-actions">
+                                            <button class="cart__item-action cart__item-action--wishlist"
+                                                    aria-label="Добавить в избранное">
+                                                <span class="material-icons cart__item-action-icon">favorite_border</span>
+                                            </button>
+                                            <button class="cart__item-action cart__item-action--remove"
+                                                    aria-label="Удалить из корзины">
+                                                <span class="material-icons cart__item-action-icon">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div id="cart-items-container" class="cart__items-container">
+                            <div id="cart-empty" class="cart__empty">
+                                <span class="material-icons cart__empty-icon">shopping_cart</span>
+                                <h2 class="cart__empty-title">Ваша корзина пуста</h2>
+                                <p class="cart__empty-text">Добавьте товары в корзину, чтобы оформить заказ</p>
+                                <a href="{{ url_for('main.catalog') }}" class="cart__button cart__button--action">
+                                    <span class="material-icons cart__button-icon">store</span>
+                                    Перейти в каталог
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if user_cart %}
+                    <div class="cart__actions">
+                        <button id="clear-cart" class="cart__button cart__button--secondary">
+                            <span class="material-icons cart__button-icon">remove_shopping_cart</span>
+                            Очистить корзину
+                        </button>
+                        <a href="{{ url_for('main.catalog') }}" class="cart__button cart__button--info">
+                            <span class="material-icons cart__button-icon">arrow_back</span>
+                            Продолжить покупки
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if user_cart %}
+                <div class="cart__summary">
+                    <div class="cart__summary-card">
+                        <h2 class="cart__summary-title">Итого</h2>
+
+                        <div class="cart__summary-details">
+                            <div class="cart__summary-row">
+                                <span class="cart__summary-label">Товары ({{ user_cart|length }}):</span>
+                                <span class="cart__summary-value" id="cart-subtotal">
+                                    {{ user_cart|sum(attribute='total_price') }} ₸
+                                </span>
+                            </div>
+                            <div class="cart__summary-row">
+                                <span class="cart__summary-label">Доставка:</span>
+                                <span class="cart__summary-value" id="cart-shipping">
+                                    {% set subtotal = user_cart|sum(attribute='total_price') %}
+                                    {% if subtotal >= 20000 %}
+                                        0 ₸
+                                    {% else %}
+                                        1500 ₸
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="cart__summary-divider"></div>
+
+                        <div class="cart__summary-total">
+                            <span class="cart__summary-total-label">Итого к оплате:</span>
+                            <span class="cart__summary-total-value" id="cart-total">
+                                {% set subtotal = user_cart|sum(attribute='total_price') %}
+                                {% set shipping = 0 if subtotal >= 20000 else 1500 %}
+                                {{ subtotal + shipping }} ₸
+                            </span>
+                        </div>
+
+                        <button id="checkout-button" class="cart__button cart__button--checkout">
+                            <span class="material-icons cart__button-icon">shopping_bag</span>
+                            Оформить заказ
+                        </button>
+                    </div>
+
+                    <div class="cart__delivery-info">
+                        <div class="cart__delivery-header">
+                            <span class="material-icons cart__delivery-icon">local_shipping</span>
+                            <h3 class="cart__delivery-title">Информация о доставке</h3>
+                        </div>
+                        <ul class="cart__delivery-list">
+                            <li class="cart__delivery-item">Доставка по всему Казахстану</li>
+                            <li class="cart__delivery-item">Бесплатная доставка при заказе от 20 000 ₸</li>
+                            <li class="cart__delivery-item">Стандартная доставка: 1-3 рабочих дня</li>
+                            <li class="cart__delivery-item">Экспресс-доставка: 1 рабочий день</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}

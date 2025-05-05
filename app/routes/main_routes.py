@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, jsonify,
 from flask_login import login_required, current_user
 
 from ..forms import ContactForm
-from ..utils import get_filtered_paginated_products, get_product, add_to_wishlist, remove_from_wishlist
+from ..utils import get_filtered_paginated_products, get_product, add_to_wishlist, remove_from_wishlist, get_user_cart
 
 main_bp = Blueprint("main", __name__, url_prefix="/")
 
@@ -16,6 +16,12 @@ def home():
 @main_bp.route("/catalog")
 def catalog():
     return render_template("catalog.html")
+
+
+@main_bp.route("cart")
+def cart():
+    user_cart = get_user_cart(current_user.id) if current_user.is_authenticated else []
+    return render_template("cart.html", user_cart=user_cart)
 
 
 @main_bp.route("/about")
@@ -54,21 +60,18 @@ def get_products():
             price_max=price_max,
             categories=categories,
             sort_by=sort_by,
-            user_id=current_user.id if current_user.is_authenticated else None,
+            user_id=current_user.id if current_user.is_authenticated else None
         )
-        rendered_html = "".join([
-            render_template('product_card.html', product=product)
-            for product in results["data"]
-        ])
-
+        rendered_html = "".join(
+            [render_template('product_card.html', product=product) for product in results["data"]]
+        )
         return jsonify({
             "html": rendered_html,
             "page": results["page"],
             "total_pages": results["total_pages"],
-            "total_items": results["total_items"],
+            "total_items": results["total_items"]
         })
     except Exception as e:
-        print(e)
         return jsonify({"error": str(e)}), 500
 
 

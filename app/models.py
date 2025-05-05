@@ -1,5 +1,6 @@
-from datetime import datetime
 from flask_login import UserMixin
+from sqlalchemy.sql import func
+
 from .extensions import db, login_manager
 
 
@@ -22,6 +23,8 @@ class User(db.Model, UserMixin):
 
     wishlists = db.relationship("Wishlist", back_populates="user",
                                 cascade="all, delete-orphan", lazy="dynamic")
+    carts = db.relationship("Cart", back_populates="user",
+                            cascade="all, delete-orphan", lazy="dynamic")
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -44,6 +47,8 @@ class Product(db.Model):
                                     cascade="all, delete-orphan", lazy="dynamic")
     specs = db.relationship("ProductSpec", back_populates="product",
                             cascade="all, delete-orphan", lazy="dynamic")
+    carted_by = db.relationship("Cart", back_populates="product",
+                                cascade="all, delete-orphan", lazy="dynamic")
 
     def __repr__(self):
         return f"<Product {self.name}>"
@@ -69,7 +74,7 @@ class Wishlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    date_added = db.Column(db.DateTime, default=func.now(), nullable=False)
 
     user = db.relationship("User", back_populates="wishlists")
     product = db.relationship("Product", back_populates="wishlisted_by")
@@ -78,3 +83,21 @@ class Wishlist(db.Model):
 
     def __repr__(self):
         return f"<Wishlist User: {self.user_id}, Product: {self.product_id}>"
+
+
+class Cart(db.Model):
+    __tablename__ = "carts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
+    date_added = db.Column(db.DateTime, default=func.now(), nullable=False)
+
+    user = db.relationship("User", back_populates="carts")
+    product = db.relationship("Product", back_populates="carted_by")
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'product_id', name='uq_user_product'),)
+
+    def __repr__(self):
+        return f"<Cart User: {self.user_id}, Product: {self.product_id}>"

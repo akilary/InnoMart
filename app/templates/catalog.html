@@ -3,7 +3,6 @@
 {% block title %}Каталог - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/choices/choices.min.css') }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/catalog.css") }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/product_card.css") }}">
 {% endblock %}
@@ -56,7 +55,6 @@
                         </div>
                     </div>
 
-                    {# TODO: Подключить Choices.js для select #}
                     <div class="catalog__filter">
                         <h3 class="catalog__filter-title" id="sort-heading">Сортировка</h3>
                         <select id="filter-select"
@@ -256,7 +254,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='lib/choices/choices.min.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/catalog.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/wishlist.js') }}"></script>
 {% endblock %}
