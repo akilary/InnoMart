@@ -7,34 +7,32 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="css/product_card.css") }}">
 {% endblock %}
 
+{% block page_title %}Каталог товаров{% endblock %}
+
 {% block content %}
     <section class="catalog">
-        <div class="main__container catalog__container">
-            <h1 class="catalog__title">Каталог товаров</h1>
-
+        <div class="catalog__container">
             <div class="catalog__search" role="search">
                 <input type="text"
                        id="catalog-search"
-                       class="search-input"
+                       class="catalog__search-input"
                        placeholder="Поиск по товарам..."
                        aria-label="Поиск по товарам">
             </div>
 
-            <div class="catalog__filters-toggle">
-                <button type="button"
-                        id="catalog-toggle-filters"
-                        class="catalog__filters-toggle-button">
-                    <span class="material-icons catalog__filters-toggle-icon">close</span>
-                    <span id="toggle-text" class="catalog__filters-toggle-text">Фильтры</span>
-                </button>
-            </div>
+            <button type="button"
+                    id="catalog-toggle-filters"
+                    class="catalog__filters-toggle-button">
+                <span class="material-icons catalog__filters-toggle-icon" aria-hidden="true">close</span>
+                <span id="toggle-text" class="catalog__filters-toggle-text">Фильтры</span>
+            </button>
 
-            <div id="catalog-filters" class="catalog__filters" aria-labelledby="catalog-toggle-filters">
+            <aside id="catalog-filters" class="catalog__filters" aria-labelledby="catalog-toggle-filters">
                 <form id="filter-form" class="catalog__filter-form" aria-label="Фильтры товаров">
-                    <div class="catalog__filter">
-                        <h3 class="catalog__filter-title">Цена</h3>
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title">Цена</legend>
                         <div class="catalog__filter-price">
-                            <div class="catalog__filter-price-item">
+                            <div class="catalog__filter-price-field">
                                 <input type="number"
                                        id="price-min"
                                        name="price_min"
@@ -43,7 +41,7 @@
                                        min="0"
                                        aria-label="Минимальная цена">
                             </div>
-                            <div class="catalog__filter-price-item">
+                            <div class="catalog__filter-price-field">
                                 <input type="number"
                                        id="price-max"
                                        name="price_max"
@@ -53,10 +51,10 @@
                                        aria-label="Максимальная цена">
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div class="catalog__filter">
-                        <h3 class="catalog__filter-title" id="sort-heading">Сортировка</h3>
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title" id="sort-heading">Сортировка</legend>
                         <select id="filter-select"
                                 name="sort_by"
                                 class="catalog__filter-select"
@@ -68,10 +66,10 @@
                             <option value="new">Сначала новые</option>
                             <option value="discount">По размеру скидки</option>
                         </select>
-                    </div>
+                    </fieldset>
 
-                    <div class="catalog__filter">
-                        <h3 class="catalog__filter-title">Наличие</h3>
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title">Наличие</legend>
                         <div class="catalog__filter-options">
                             <label class="catalog__filter-option">
                                 <input type="checkbox"
@@ -90,10 +88,10 @@
                                 <span>Со скидкой</span>
                             </label>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <div class="catalog__categories">
-                        <h3 class="catalog__filter-title">Категории</h3>
+                    <fieldset class="catalog__categories">
+                        <legend class="catalog__filter-title">Категории</legend>
                         <div class="catalog__categories-list">
                             <label for="category-3d" class="catalog__category">
                                 <input type="checkbox"
@@ -101,7 +99,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="3D-печать">
-                                <span class="material-icons catalog__category-icon">3d_rotation</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">3d_rotation</span>
                                 3D-печать
                             </label>
 
@@ -111,7 +109,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Электроника">
-                                <span class="material-icons catalog__category-icon">memory</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">memory</span>
                                 Электроника
                             </label>
 
@@ -122,7 +120,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Робототехника">
-                                <span class="material-icons catalog__category-icon">smart_toy</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">smart_toy</span>
                                 Робототехника
                             </label>
 
@@ -133,7 +131,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Материалы">
-                                <span class="material-icons catalog__category-icon">layers</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">layers</span>
                                 Материалы
                             </label>
 
@@ -143,7 +141,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Инструменты">
-                                <span class="material-icons catalog__category-icon">build</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">build</span>
                                 Инструменты
                             </label>
 
@@ -153,7 +151,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Оптика">
-                                <span class="material-icons catalog__category-icon">visibility</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">visibility</span>
                                 Оптика
                             </label>
 
@@ -163,7 +161,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Программируемые устройства">
-                                <span class="material-icons catalog__category-icon">developer_board</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">developer_board</span>
                                 Программируемые устройства
                             </label>
 
@@ -173,7 +171,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Механика и крепеж">
-                                <span class="material-icons catalog__category-icon">precision_manufacturing</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">precision_manufacturing</span>
                                 Механика и крепеж
                             </label>
 
@@ -183,7 +181,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Энергетика">
-                                <span class="material-icons catalog__category-icon">bolt</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">bolt</span>
                                 Энергетика
                             </label>
 
@@ -193,7 +191,7 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Стендовые модели и DIY-наборы">
-                                <span class="material-icons catalog__category-icon">toys</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">toys</span>
                                 Стендовые модели и DIY-наборы
                             </label>
 
@@ -203,11 +201,11 @@
                                        name="categories"
                                        class="catalog__category-checkbox"
                                        value="Расходные материалы">
-                                <span class="material-icons catalog__category-icon">inventory_2</span>
+                                <span class="material-icons catalog__category-icon" aria-hidden="true">inventory_2</span>
                                 Расходные материалы
                             </label>
                         </div>
-                    </div>
+                    </fieldset>
 
                     <div class="catalog__filter-buttons">
                         <button type="submit"
@@ -228,22 +226,22 @@
                         </p>
                     </div>
                 </form>
-            </div>
+            </aside>
 
             <div class="catalog__cards-wrapper">
-                <div id="catalog-loader" class="catalog__loader" style="display: none;" role="status">
+                <div id="catalog-loader" class="catalog__loader catalog__loader--hidden" role="status">
                     <span class="catalog__loader-spinner" aria-hidden="true"></span>
                     <span>Загрузка товаров...</span>
                 </div>
-                <div id="products-container" class="catalog__cards" role="region" aria-label="Список товаров">
+                <ul id="products-container" class="catalog__cards" role="list" aria-label="Список товаров">
                     {# Карточки товара загружаются сюда через JS #}
-                </div>
+                </ul>
             </div>
 
             <div class="catalog__load-more">
                 <button type="button"
                         id="load-more"
-                        class="catalog__load-more-button--show"
+                        class="catalog__load-more-button catalog__load-more-button--show"
                         aria-label="Загрузить больше товаров">
                     <span class="material-icons catalog__load-more-button-icon" aria-hidden="true">expand_more</span>
                     Загрузить ещё
@@ -254,6 +252,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for('static', filename='js/catalog.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/wishlist.js') }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/catalog.js") }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/wishlist.js") }}"></script>
 {% endblock %}

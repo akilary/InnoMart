@@ -10,13 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='lib/choices/choices.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="lib/choices/choices.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}">
     {% block styles %}{% endblock %}
 </head>
 <body>
-<header class="site-header">
-    <div class="main__container site-header__container">
+<header class="site-header" role="banner">
+    <div class="site-header__container">
         <div class="site-header__logo">
             <a href="{{ url_for("main.home") }}" class="site-header__logo-link">
                 <span class="site-header__logo-text">InnoMart</span>
@@ -40,7 +40,8 @@
                         <span class="site-header__nav-item-text">Войти</span>
                     </a>
                 {% endif %}
-                <a href="{{ url_for("main.cart") }}" class="site-header__nav-item site-header__nav-item--cart" aria-label="Корзина">
+                <a href="{{ url_for("main.cart") }}" class="site-header__nav-item site-header__nav-item--cart"
+                   aria-label="Корзина">
                     <span class="material-icons site-header__nav-item-icon">shopping_cart</span>
                     <span class="site-header__nav-item-text">Корзина</span>
                     {# Todo: Добавить счетчик возле корзины #}
@@ -50,74 +51,80 @@
     </div>
 </header>
 
-<main class="main">
+<main class="site-main" role="main" id="main-content">
     <div class="main__container">
+        <h1 class="site-main__title">{% block page_title %}{% endblock %}</h1>
         {% block content %}{% endblock %}
     </div>
 </main>
 
-<footer class="site-footer">
-    <div class="main__container site-footer__container">
+<footer class="site-footer" role="contentinfo">
+    <div class="site-footer__container">
         <div class="site-footer__sections">
-            <section class="footer__section">
-                <h3 class="footer__section-title">О нас</h3>
-                <ul class="footer__section-list">
-                    <li class="footer__section-list-item"><a href="{{ url_for("main.about") }}">О компании</a></li>
-                    <li class="footer__section-list-item"><a href="{{ url_for("main.team") }}">Наша команда</a></li>
-                    <li class="footer__section-list-item"><a href="#">Вакансии</a></li>
+            <section class="site-footer__section">
+                <h2 class="site-footer__section-title">О нас</h2>
+                <nav class="site-footer__nav">
+                    <ul class="site-footer__section-list">
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">О компании</a>
+                        </li>
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Наша команда</a>
+                        </li>
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Вакансии</a></li>
+                    </ul>
+                </nav>
+            </section>
+            <section class="site-footer__section">
+                <h2 class="site-footer__section-title">Клиентам</h2>
+                <nav class="site-footer__nav">
+                    <ul class="site-footer__section-list">
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Доставка</a></li>
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Оплата</a></li>
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Возврат и обмен</a></li>
+                        <li class="site-footer__section-list-item"><a href="#" class="site-footer__link">Часто задаваемые вопросы</a></li>
+                    </ul>
+                </nav>
+            </section>
+            <section class="site-footer__section">
+                <h2 class="site-footer__section-title">Контакты</h2>
+                <ul class="site-footer__section-list">
+                    <li class="site-footer__section-list-item">
+                        <a href="#" class="site-footer__link">Связаться с нами</a>
+                    </li>
+                    <li class="site-footer__section-list-item">
+                        Телефон: <a href="tel:+77777777777" class="site-footer__link">+7 (777) 777-77-77</a>
+                    </li>
+                    <li class="site-footer__section-list-item">
+                        Email: <a href="mailto:support@innomart.ru" class="site-footer__link">support@innomart.ru</a>
+                    </li>
+                    <li class="site-footer__section-list-item"><span>Адрес: Караганда, ул. Бухар-Жырау, 9</span></li>
                 </ul>
             </section>
-            <section class="footer__section">
-                <h3 class="footer__section-title">Клиентам</h3>
-                <ul class="footer__section-list">
-                    <li class="footer__section-list-item"><a href="#">Доставка</a></li>
-                    <li class="footer__section-list-item"><a href="#">Оплата</a></li>
-                    <li class="footer__section-list-item"><a href="#">Возврат и обмен</a></li>
-                    <li class="footer__section-list-item"><a href="#">Часто задаваемые вопросы</a></li>
-                </ul>
-            </section>
-            <section class="footer__section">
-                <h3 class="footer__section-title">Контакты</h3>
-                <ul class="footer__section-list">
-                    <li class="footer__section-list-item"><a href="{{ url_for("main.contacts") }}">Связаться с нами</a></li>
-                    <li class="footer__section-list-item">Телефон: <a href="tel:+77777777777">+7 (777) 777-77-77</a></li>
-                    <li class="footer__section-list-item">Email: <a href="#">support@innomart.ru</a>
+            <section class="site-footer__section">
+                <h2 class="site-footer__section-title">Мы в соцсетях</h2>
+                <ul class="site-footer__section-list">
+                    <li class="site-footer__section-list-item">
+                        <a href="#" class="site-footer__link" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">ВКонтакте</a>
                     </li>
-                    <li class="footer__section-list-item"><span>Адрес: Караганда, ул. Бухар-Жырау, 9</span></li>
-                </ul>
-            </section>
-            <section class="footer__section">
-                <h3 class="footer__section-title">Мы в соцсетях</h3>
-                <ul class="footer__section-list">
-                    <li class="footer__section-list-item">
-                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
-                            ВКонтакте
-                        </a>
+                    <li class="site-footer__section-list-item">
+                        <a href="#" class="site-footer__link" target="_blank" rel="noopener noreferrer" aria-label="Telegram">Telegram</a>
                     </li>
-                    <li class="footer__section-list-item">
-                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-                            Telegram
-                        </a>
-                    </li>
-                    <li class="footer__section-list-item">
-                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                            Instagram
-                        </a>
+                    <li class="site-footer__section-list-item">
+                        <a href="#" class="site-footer__link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
                     </li>
                 </ul>
             </section>
         </div>
-        <section class="footer__bottom">
-            <p class="footer__copyright">© {{ current_year }} InnoMart. Все права защищены.</p>
-            <p class="footer__legal">
-                <a href="#">Политика конфиденциальности</a> |
-                <a href="#">Условия использования</a>
+        <section class="site-footer__bottom">
+            <p class="site-footer__copyright">© {{ current_year }} InnoMart. Все права защищены.</p>
+            <p class="site-footer__legal">
+                <a href="#" class="site-footer__link site-footer__link--legal">Политика конфиденциальности</a> |
+                <a href="#" class="site-footer__link site-footer__link--legal">Условия использования</a>
             </p>
         </section>
     </div>
 </footer>
 
-<script src="{{ url_for('static', filename='lib/choices/choices.min.js') }}"></script>
+<script src="{{ url_for("static", filename="lib/choices/choices.min.js") }}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

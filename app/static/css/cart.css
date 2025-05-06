@@ -42,7 +42,7 @@
 .cart__item {
     display: flex;
     padding: var(--spacing-md);
-    border-bottom: 1px solid var(--color-border-light);
+    border-bottom: 1px solid var(--color-border);
     transition: background-color var(--transition-base);
 }
 
@@ -210,7 +210,7 @@
     justify-content: space-between;
     padding: var(--spacing-md) var(--spacing-lg);
     background-color: var(--color-background-light);
-    border-top: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border);
 }
 
 /* Empty Cart State */
@@ -303,7 +303,7 @@
 
 .cart__summary-divider {
     height: 1px;
-    background-color: var(--color-border-light);
+    background-color: var(--color-border);
     margin: var(--spacing-md) 0;
 }
 
