@@ -1,41 +1,65 @@
-import { fetchApi } from './utils/api.js';
+import {fetchApi} from "./utils/api.js";
 
-function initWishlist() {
-    // Удаление из избранного
-    const deleteButtons = document.querySelectorAll('.button--remove-favorite');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-            const productId = button.dataset.productId;
+/** Инициализирует функциональность добавления товаров в избранное */
+const initAddWishlist = () => {
+    document.body.addEventListener("click", async (e) => {
+        const addWishlistButton = e.target.closest(".product-card__action-button--wishlist");
+        if (addWishlistButton && !addWishlistButton.disabled) {
+            addWishlistButton.disabled = true;
+
+            const productId = addWishlistButton.dataset.productId;
+            const icon = addWishlistButton.querySelector(".product-card__action-button-icon");
+
             try {
-                await fetchApi(`/api/wishlist/${productId}`, { method: 'DELETE' });
-                console.log('Товар удалён');
-                button.closest('.favorites__item').remove();
-            } catch (error) {
-                console.error('Ошибка при удалении товара');
+                await fetchApi(`/api/wishlist/${productId}`, {method: "PUT"});
+                addWishlistButton.classList.remove("product-card__action-button--wishlist");
+                addWishlistButton.classList.add("product-card__action-button--in-wishlist");
+                if (icon) {
+                    icon.textContent = icon.textContent.trim() === "bookmark"
+                        ? "bookmark_add"
+                        : "bookmark";
+                }
+            } catch (err) {
+                console.error("%c[Wishlist] Ошибка при добавлении в избранное:", "color: red; font-weight: bold;", err);
+            } finally {
+                addWishlistButton.disabled = false;
             }
-        });
-    });
-
-    // Добавление в избранное
-    document.body.addEventListener('click', async (e) => {
-        const button = e.target.closest('.wishlist-btn');
-        const is_button_favorite = e.target.closest('.button--remove-favorite');
-        if (!button || is_button_favorite) return;
-
-        e.preventDefault();
-        const productId = button.dataset.productId;
-        const icon = button.querySelector('i.material-icons');
-
-        try {
-            await fetchApi(`/api/wishlist/${productId}`, { method: 'PUT' });
-            button.classList.toggle('active');
-            if (icon) {
-                icon.textContent = icon.textContent.trim() === 'bookmark' ? 'bookmark_add' : 'bookmark';
-            }
-        } catch (error) {
-            console.error('Ошибка при добавлении в избранное');
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', initWishlist);
+/** Инициализирует функциональность удаления товаров из избранного */
+const initRemoveWishlist = () => {
+    document.body.addEventListener("click", async (e) => {
+        const removeWishlistButton = e.target.closest(".product-card__action-button--in-wishlist");
+        if (removeWishlistButton && !removeWishlistButton.disabled) {
+            removeWishlistButton.disabled = true;
+
+            const productId = removeWishlistButton.dataset.productId;
+            const icon = removeWishlistButton.querySelector(".product-card__action-button-icon");
+
+            try {
+                await fetchApi(`/api/wishlist/${productId}`, {method: "DELETE"});
+                removeWishlistButton.classList.remove("product-card__action-button--in-wishlist");
+                removeWishlistButton.classList.add("product-card__action-button--wishlist");
+                if (icon) {
+                    icon.textContent = icon.textContent.trim() === "bookmark_add"
+                        ? "bookmark"
+                        : "bookmark_add";
+                }
+            } catch (err) {
+                console.error("%c[Wishlist] Ошибка при удалении из избранного:", "color: red; font-weight: bold;", err);
+            } finally {
+                removeWishlistButton.disabled = false;
+            }
+        }
+    });
+}
+
+/** Главная функция инициализации функциональности избранного */
+const init = () => {
+    initAddWishlist()
+    initRemoveWishlist()
+}
+
+document.addEventListener("DOMContentLoaded", init);

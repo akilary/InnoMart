@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, jsonify, request
+from flask import Blueprint, render_template, redirect, flash, jsonify, request
 from flask_login import login_required, current_user
 
-from ..forms import ContactForm
 from ..utils import get_filtered_paginated_products, get_product, add_to_wishlist, remove_from_wishlist, get_user_cart
 
 main_bp = Blueprint("main", __name__, url_prefix="/")
@@ -22,26 +21,6 @@ def catalog():
 def cart():
     user_cart = get_user_cart(current_user.id) if current_user.is_authenticated else []
     return render_template("cart.html", user_cart=user_cart)
-
-
-@main_bp.route("/about")
-def about():
-    return render_template("about.html")
-
-
-@main_bp.route("/contacts", methods=["GET", "POST"])
-def contacts():
-    form = ContactForm()
-    if form.validate_on_submit():
-        flash("Ваше сообщение успешно отправлено!", "success")
-        return redirect(url_for("main.contacts"))
-    return render_template("contact.html", form=form)
-
-
-@main_bp.route("/team")
-def team():
-    return render_template("team.html")
-
 
 @main_bp.route('/api/products', methods=["GET"])
 def get_products():
