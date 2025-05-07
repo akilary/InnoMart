@@ -72,7 +72,7 @@
 
 .features__item,
 .categories__card {
-    background: var(--color-surface);
+    background-color: var(--color-surface);
     border: 1px solid var(--color-border);
 }
 
@@ -94,7 +94,7 @@
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background: var(--color-accent);
+    background-color: var(--color-accent);
     border-radius: 3px;
 }
 
@@ -117,13 +117,13 @@
 
 .hero__content {
     position: relative;
-    background: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
 }
 
 .hero__label {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-pill);
     font-size: var(--font-size-sm);
@@ -188,7 +188,7 @@
 .hero__stat {
     flex-direction: column;
     align-items: center;
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     padding: var(--spacing-md);
     min-width: 100px;
     backdrop-filter: blur(5px);
@@ -196,7 +196,7 @@
 
 .hero__stat:hover {
     transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .hero__stat-number {
@@ -212,7 +212,7 @@
 
 .features {
     padding: var(--spacing-xl) 0;
-    background: var(--color-surface);
+    background-color: var(--color-surface);
 }
 
 .features__grid, .categories__grid {
@@ -249,7 +249,7 @@
 
 .categories {
     padding: var(--spacing-xl) 0;
-    background: var(--color-background);
+    background-color: var(--color-background);
 }
 
 .categories__grid {
@@ -332,13 +332,13 @@
 }
 
 .cta__button--contact {
-    background: var(--color-surface);
+    background-color: var(--color-surface);
     color: var(--color-primary);
     border: 1px solid var(--color-surface);
 }
 
 .cta__button--contact:hover {
-    background: transparent;
+    background-color: transparent;
     color: var(--color-surface);
 }
 
@@ -348,7 +348,7 @@
 }
 
 .cta__button--call:hover {
-    background: var(--color-surface);
+    background-color: var(--color-surface);
     color: var(--color-primary);
 }
 
