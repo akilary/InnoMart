@@ -7,6 +7,7 @@ from ..utils import create_user, authenticate_user
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
+# Регистрация пользователя
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
@@ -24,6 +25,7 @@ def register():
     return render_template("register.html", form=form)
 
 
+# Вход в систему
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -39,7 +41,8 @@ def login():
     return render_template("login.html", form=form)
 
 
-@auth_bp.route("/logout", methods=["GET", "POST"])
+# Выход из системы
+@auth_bp.route("/logout", methods=["POST"])
 def logout():
     logout_user()
     flash("Вы вышли из системы", "info")

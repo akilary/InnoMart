@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, flash, jsonify, request
 from flask_login import login_required, current_user
 
 from ..utils import (
-    get_filtered_paginated_products, add_to_wishlist, remove_from_wishlist, get_user_cart, add_to_cart,
+    get_filtered_paginated_products, add_to_wishlist, remove_from_wishlist, get_cart_items, add_to_cart,
     remove_from_cart, get_cart_quantity
 )
 from ..utils.shared import get_product_by_id
@@ -10,6 +10,7 @@ from ..utils.shared import get_product_by_id
 main_bp = Blueprint("main", __name__, url_prefix="/")
 
 
+# Основные страницы
 @main_bp.route("/")
 @main_bp.route("/home")
 def home():
@@ -21,8 +22,9 @@ def catalog():
     return render_template("catalog.html")
 
 
+# API для продуктов
 @main_bp.route("/api/products", methods=["GET"])
-def get_products():
+def api_get_products():
     try:
         page = request.args.get("page", 1, type=int)
         per_page = request.args.get("per_page", 20, type=int)
@@ -32,13 +34,13 @@ def get_products():
         sort_by = request.args.get("sort_by")
 
         results = get_filtered_paginated_products(
+            user_id=current_user.id if current_user.is_authenticated else -1,
             page=page,
             per_page=per_page,
+            categories=categories,
             price_min=price_min,
             price_max=price_max,
-            categories=categories,
-            sort_by=sort_by,
-            user_id=current_user.id if current_user.is_authenticated else -1
+            sort_by=sort_by
         )
         rendered_html = "".join(
             [render_template("product_card.html", product=product) for product in results["data"]]
@@ -53,15 +55,17 @@ def get_products():
         return jsonify({"error": str(e)}), 500
 
 
-@main_bp.route("cart")
+# Страница и API для корзины
+@main_bp.route("/cart")
+@login_required
 def cart():
-    user_cart = get_user_cart(current_user.id) if current_user.is_authenticated else []
+    user_cart = get_cart_items(current_user.id)
     return render_template("cart.html", user_cart=user_cart)
 
 
 @main_bp.route("/api/cart/<int:product_id>", methods=["PUT"])
 @login_required
-def add_product_to_cart(product_id: int):
+def api_add_to_cart(product_id: int):
     try:
         add_to_cart(current_user.id, product_id)
         return jsonify({"message": "Товар добавлен в корзину"}), 200
@@ -73,7 +77,7 @@ def add_product_to_cart(product_id: int):
 
 @main_bp.route("/api/cart/<int:product_id>", methods=["DELETE"])
 @login_required
-def remove_product_from_cart(product_id: int):
+def api_remove_from_cart(product_id: int):
     try:
         remove_from_cart(current_user.id, product_id)
         return jsonify({"message": "Товар удалён из корзины"}), 200
@@ -85,7 +89,7 @@ def remove_product_from_cart(product_id: int):
 
 @main_bp.route("/api/cart/quantity", methods=["GET"])
 @login_required
-def get_cart_item_quantity():
+def api_get_cart_quantity():
     try:
         return jsonify({"message": "Количество товаров в корзине", "quantity": get_cart_quantity(current_user.id)}), 200
     except ValueError as e:
@@ -94,9 +98,10 @@ def get_cart_item_quantity():
         return jsonify({"message": f"Ошибка сервера: {e}"}), 500
 
 
+# API для избранного
 @main_bp.route("/api/wishlist/<int:product_id>", methods=["PUT"])
 @login_required
-def add_product_to_wishlist(product_id: int):
+def api_add_to_wishlist(product_id: int):
     try:
         add_to_wishlist(current_user.id, product_id)
         return jsonify({"message": "Товар добавлен в избранное"}), 200
@@ -108,7 +113,7 @@ def add_product_to_wishlist(product_id: int):
 
 @main_bp.route("/api/wishlist/<int:product_id>", methods=["DELETE"])
 @login_required
-def remove_product_from_wishlist(product_id: int):
+def api_remove_from_wishlist(product_id: int):
     try:
         remove_from_wishlist(current_user.id, product_id)
         return jsonify({"message": "Товар удалён из избранного"}), 200
@@ -118,7 +123,8 @@ def remove_product_from_wishlist(product_id: int):
         return jsonify({"message": f"Ошибка сервера: {e}"}), 500
 
 
-@main_bp.route("product/<int:product_id>", methods=["GET", "POST"])
+# Страница деталей продукта
+@main_bp.route("/product/<int:product_id>", methods=["GET"])
 def product_details(product_id: int):
     try:
         return render_template("product_detail.html", product=get_product_by_id(product_id))
