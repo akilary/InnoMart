@@ -40,7 +40,7 @@ def add_to_cart(user_id: int, product_id: int, quantity: int = 1) -> Cart:
     if cart_item:
         cart_item.quantity += quantity
     else:
-        cart_item = Cart(user_id=user_id, product_id=product_id, quantity=quantity)
+        cart_item = Cart(user_id=user.id, product_id=product.id, quantity=quantity)
 
     try:
         db.session.add(cart_item)
@@ -67,3 +67,10 @@ def remove_from_cart(user_id: int, product_id: int) -> Cart:
     except Exception as e:
         db.session.rollback()
         raise RuntimeError("Ошибка при удалении из корзины") from e
+
+
+def get_cart_quantity(user_id: int) -> int:
+    """Возвращает количество товаров в корзине пользователя"""
+    user = get_user_by_id(user_id)
+    cart_items = Cart.query.filter_by(user_id=user.id).all()
+    return sum(item.quantity for item in cart_items)

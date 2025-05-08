@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from ..utils import (
     get_filtered_paginated_products, add_to_wishlist, remove_from_wishlist, get_user_cart, add_to_cart,
-    remove_from_cart
+    remove_from_cart, get_cart_quantity
 )
 from ..utils.shared import get_product_by_id
 
@@ -77,6 +77,17 @@ def remove_product_from_cart(product_id: int):
     try:
         remove_from_cart(current_user.id, product_id)
         return jsonify({"message": "Товар удалён из корзины"}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+    except Exception as e:
+        return jsonify({"message": f"Ошибка сервера: {e}"}), 500
+
+
+@main_bp.route("/api/cart/quantity", methods=["GET"])
+@login_required
+def get_cart_item_quantity():
+    try:
+        return jsonify({"message": "Количество товаров в корзине", "quantity": get_cart_quantity(current_user.id)}), 200
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
     except Exception as e:

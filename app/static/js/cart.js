@@ -1,5 +1,16 @@
 import {fetchApi} from "./utils/api.js";
 
+/** Обновляет счетчик товаров в шапке */
+const updateCartCounter = async () => {
+    const cartCounter = document.getElementById("cart-quantity");
+    if (cartCounter) {
+        await fetchApi("/api/cart/quantity", {method: "GET"})
+            .then(data => {
+                cartCounter.textContent = data["quantity"];
+            });
+    }
+};
+
 /** Инициализирует функциональность добавления товаров в корзину */
 const initAddCart = () => {
     document.body.addEventListener("click", async (e) => {
@@ -9,9 +20,9 @@ const initAddCart = () => {
 
             const productId = addCartButton.dataset.productId;
             const icon = addCartButton.querySelector(".product-card__action-button-icon");
-
             try {
                 await fetchApi(`/api/cart/${productId}`, {method: "PUT"});
+
                 addCartButton.classList.remove("product-card__action-button--cart");
                 addCartButton.classList.add("product-card__action-button--in-cart");
                 if (icon) {
@@ -19,6 +30,7 @@ const initAddCart = () => {
                         ? "add_shopping_cart"
                         : "remove_shopping_cart";
                 }
+                await updateCartCounter();
             } catch (err) {
                 console.error("%c[Wishlist] Ошибка при добавлении в корзину:", "color: red; font-weight: bold;", err);
             } finally {
@@ -40,6 +52,7 @@ const initRemoveCart = () => {
 
             try {
                 await fetchApi(`/api/cart/${productId}`, {method: "DELETE"});
+
                 removeCartButton.classList.remove("product-card__action-button--in-cart");
                 removeCartButton.classList.add("product-card__action-button--cart");
                 if (icon) {
@@ -47,6 +60,7 @@ const initRemoveCart = () => {
                         ? "remove_shopping_cart"
                         : "add_shopping_cart";
                 }
+                await updateCartCounter();
             } catch (err) {
                 console.error("%c[Wishlist] Ошибка при удалении из корзины:", "color: red; font-weight: bold;", err);
             } finally {

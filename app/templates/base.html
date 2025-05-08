@@ -44,7 +44,11 @@
                    aria-label="Корзина">
                     <span class="material-icons site-header__nav-item-icon">shopping_cart</span>
                     <span class="site-header__nav-item-text">Корзина</span>
-                    {# Todo: Добавить счетчик возле корзины #}
+                    {% if current_user.is_authenticated %}
+                        <span class="site-header__nav-item-quantity" id="cart-quantity">
+                            {{ current_user.carts.count() }}
+                        </span>
+                    {% endif %}
                 </a>
             </nav>
         </div>
