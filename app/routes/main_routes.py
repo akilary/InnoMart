@@ -1,7 +1,11 @@
 from flask import Blueprint, render_template, redirect, flash, jsonify, request
 from flask_login import login_required, current_user
 
-from ..utils import get_filtered_paginated_products, get_product, add_to_wishlist, remove_from_wishlist, get_user_cart
+from ..utils import (
+    get_filtered_paginated_products, add_to_wishlist, remove_from_wishlist, get_user_cart, add_to_cart,
+    remove_from_cart
+)
+from ..utils.shared import get_product_by_id
 
 main_bp = Blueprint("main", __name__, url_prefix="/")
 
@@ -17,12 +21,7 @@ def catalog():
     return render_template("catalog.html")
 
 
-@main_bp.route("cart")
-def cart():
-    user_cart = get_user_cart(current_user.id) if current_user.is_authenticated else []
-    return render_template("cart.html", user_cart=user_cart)
-
-@main_bp.route('/api/products', methods=["GET"])
+@main_bp.route("/api/products", methods=["GET"])
 def get_products():
     try:
         page = request.args.get("page", 1, type=int)
@@ -39,10 +38,10 @@ def get_products():
             price_max=price_max,
             categories=categories,
             sort_by=sort_by,
-            user_id=current_user.id if current_user.is_authenticated else None
+            user_id=current_user.id if current_user.is_authenticated else -1
         )
         rendered_html = "".join(
-            [render_template('product_card.html', product=product) for product in results["data"]]
+            [render_template("product_card.html", product=product) for product in results["data"]]
         )
         return jsonify({
             "html": rendered_html,
@@ -52,6 +51,36 @@ def get_products():
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@main_bp.route("cart")
+def cart():
+    user_cart = get_user_cart(current_user.id) if current_user.is_authenticated else []
+    return render_template("cart.html", user_cart=user_cart)
+
+
+@main_bp.route("/api/cart/<int:product_id>", methods=["PUT"])
+@login_required
+def add_product_to_cart(product_id: int):
+    try:
+        add_to_cart(current_user.id, product_id)
+        return jsonify({"message": "Товар добавлен в корзину"}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+    except Exception as e:
+        return jsonify({"message": f"Ошибка сервера: {e}"}), 500
+
+
+@main_bp.route("/api/cart/<int:product_id>", methods=["DELETE"])
+@login_required
+def remove_product_from_cart(product_id: int):
+    try:
+        remove_from_cart(current_user.id, product_id)
+        return jsonify({"message": "Товар удалён из корзины"}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
+    except Exception as e:
+        return jsonify({"message": f"Ошибка сервера: {e}"}), 500
 
 
 @main_bp.route("/api/wishlist/<int:product_id>", methods=["PUT"])
@@ -81,7 +110,7 @@ def remove_product_from_wishlist(product_id: int):
 @main_bp.route("product/<int:product_id>", methods=["GET", "POST"])
 def product_details(product_id: int):
     try:
-        return render_template("product_detail.html", product=get_product(product_id))
+        return render_template("product_detail.html", product=get_product_by_id(product_id))
     except ValueError as e:
         flash(str(e), "danger")
         return redirect("home")

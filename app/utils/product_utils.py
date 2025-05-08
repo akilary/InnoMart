@@ -1,4 +1,5 @@
-from ..models import Product, Wishlist
+from .shared import get_user_by_id
+from ..models import Product, Wishlist, Cart
 
 
 def get_filtered_paginated_products(
@@ -8,9 +9,10 @@ def get_filtered_paginated_products(
         price_max: float | None,
         categories: list[str] | None,
         sort_by: str | None,
-        user_id: int | None
+        user_id: int
 ) -> dict[str, any]:
     """Возвращает товары с пагинацией и фильтрацией"""
+    user = get_user_by_id(user_id)
     query = Product.query
 
     if price_min is not None:
@@ -30,11 +32,13 @@ def get_filtered_paginated_products(
     if sort_by in sort_mapping and sort_mapping[sort_by] is not None:
         query = query.order_by(sort_mapping[sort_by])
 
-    wishlist_ids = set()
-    if user_id:
-        wishlist_ids = {
-            w.product_id for w in Wishlist.query.filter_by(user_id=user_id).with_entities(Wishlist.product_id).all()
-        }
+
+    wishlist_ids = {
+        w.product_id for w in Wishlist.query.filter_by(user_id=user.id).with_entities(Wishlist.product_id).all()
+    }
+    cart_ids = {
+        c.product_id for c in Cart.query.filter_by(user_id=user.id).with_entities(Cart.product_id).all()
+    }
 
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     products = [{
@@ -45,6 +49,7 @@ def get_filtered_paginated_products(
         "category": product.category,
         "image_url": product.image_url,
         "in_wishlist": product.id in wishlist_ids,
+        "in_cart": product.id in cart_ids
     } for product in pagination.items]
 
     return {
@@ -54,12 +59,3 @@ def get_filtered_paginated_products(
         "total_pages": pagination.pages,
         "total_items": pagination.total,
     }
-
-
-def get_product(product_id: int) -> Product:
-    """Возвращает информацию о продукте"""
-    product = Product.query.get(product_id)
-    if not product:
-        raise ValueError(f"Продукт c ID {product_id} не найден")
-
-    return product

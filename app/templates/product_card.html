@@ -15,8 +15,9 @@
 
             <div class="product-card__actions">
                 <button type="button"
-                        class="product-card__action-button product-card__action-button--wishlist
-                        {% if product.in_wishlist %} product-card__action-button--in-wishlist{% endif %}"
+                        class="product-card__action-button
+                        {% if product.in_wishlist %} product-card__action-button--in-wishlist
+                        {% else %} product-card__action-button--wishlist {% endif %}"
                         data-product-id="{{ product.id }}"
                         data-action="wishlist"
                         aria-label="Добавить в избранное">
@@ -25,8 +26,9 @@
                 </span>
                 </button>
                 <button type="button"
-                        class="product-card__action-button product-card__action-button--cart
-                        {% if product.in_cart %}product-card__action-button--in-cart{% endif %}"
+                        class="product-card__action-button
+                        {% if product.in_cart %}product-card__action-button--in-cart
+                        {% else %}product-card__action-button--cart{% endif %}"
                         data-product-id="{{ product.id }}"
                         aria-label="Добавить в корзину">
                 <span class="material-icons product-card__action-button-icon">
