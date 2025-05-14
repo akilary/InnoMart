@@ -1,3 +1,4 @@
+.home__container,
 .hero,
 .hero__container,
 .hero__actions,
@@ -45,6 +46,13 @@
 .categories__button--more:hover,
 .cta__button--contact:hover,
 .cta__button--call:hover { transform: translateY(-2px); }
+
+.home__container,
+.hero__container {
+    flex-direction: column;
+    flex: 1;
+    gap: var(--spacing-xxl);
+}
 
 .features__item:hover,
 .categories__card:hover {
@@ -100,7 +108,7 @@
 
 .hero {
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 80vh;
     padding: var(--spacing-xl) 0;
     background: linear-gradient(-45deg, var(--color-primary), var(--color-accent));
@@ -110,12 +118,8 @@
     box-shadow: var(--box-shadow);
 }
 
-.hero__container {
-    flex-direction: column;
-    gap: var(--spacing-xl);
-}
-
 .hero__content {
+    margin-left: var(--spacing-xxl);
     position: relative;
     background-color: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
@@ -179,8 +183,8 @@
 }
 
 .hero__stats {
-    justify-content: space-between;
-    margin-top: var(--spacing-xl);
+    justify-content: flex-end;
+    margin: var(--spacing-xl) var(--spacing-xxl) 0 0;
     flex-wrap: wrap;
     gap: var(--spacing-lg);
 }

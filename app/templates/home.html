@@ -9,157 +9,164 @@
 {% block page_title %}Откройте инновации с InnoMart{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <div class="hero__container">
-            <div class="hero__content">
-                <span class="hero__label">Место, где технологии становятся возможностями</span>
-                <h2 class="hero__title">Магазин, в котором рождаются идеи</h2>
-                <p class="hero__description">
-                    InnoMart — это больше, чем магазин. Мы объединяем идеи, технологии и людей,
-                    чтобы создавать решения завтрашнего дня уже сегодня. От электроники до 3D-печати — всё,
-                    чтобы воплотить ваши идеи в реальность.
-                </p>
-                <nav class="hero__actions">
-                    <a href="{{ url_for("main.catalog") }}" class="hero__button hero__button--action"
-                       aria-label="Перейти в каталог товаров">
-                        <span class="material-icons hero__button-icon" aria-hidden="true">shopping_cart</span>
-                        Перейти в каталог
-                    </a>
-                    <a href="#" class="hero__button hero__button--info"
-                       aria-label="Узнать больше о компании">
-                        <span class="material-icons hero__button-icon" aria-hidden="true">info</span>
-                        Узнать больше
-                    </a>
-                </nav>
-            </div>
-            <div class="hero__stats">
-                <div class="hero__stat">
-                    <span class="hero__stat-number">10+</span>
-                    <span class="hero__stat-label">категорий товаров</span>
+    <section class="home">
+        <div class="home__container">
+            <section class="hero">
+                <div class="hero__container">
+                    <div class="hero__content">
+                        <span class="hero__label">Место, где технологии становятся возможностями</span>
+                        <h1 class="hero__title">Магазин, в котором рождаются идеи</h1>
+                        <p class="hero__description">
+                            InnoMart — это больше, чем магазин. Мы объединяем идеи, технологии и людей,
+                            чтобы создавать решения завтрашнего дня уже сегодня. От электроники до 3D-печати — всё,
+                            чтобы воплотить ваши идеи в реальность.
+                        </p>
+                        <nav class="hero__actions">
+                            <a href="{{ url_for("main.catalog") }}" class="hero__button hero__button--action"
+                               aria-label="Перейти в каталог товаров">
+                                <span class="material-icons hero__button-icon" aria-hidden="true">shopping_cart</span>
+                                Перейти в каталог
+                            </a>
+                            <a href="#" class="hero__button hero__button--info"
+                               aria-label="Узнать больше о компании">
+                                <span class="material-icons hero__button-icon" aria-hidden="true">info</span>
+                                Узнать больше
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="hero__stats">
+                        <div class="hero__stat">
+                            <span class="hero__stat-number">10+</span>
+                            <span class="hero__stat-label">категорий товаров</span>
+                        </div>
+                        <div class="hero__stat">
+                            <span class="hero__stat-number">100+</span>
+                            <span class="hero__stat-label">товаров в наличии</span>
+                        </div>
+                        <div class="hero__stat">
+                            <span class="hero__stat-number">24/7</span>
+                            <span class="hero__stat-label">техподдержка</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero__stat">
-                    <span class="hero__stat-number">100+</span>
-                    <span class="hero__stat-label">товаров в наличии</span>
+            </section>
+
+            <section class="features">
+                <div class="features__container">
+                    <h2 class="features__title">Наши преимущества</h2>
+                    <div class="features__grid">
+                        <article class="features__item">
+                            <span class="material-icons features__item-icon" aria-hidden="true">local_shipping</span>
+                            <h3 class="features__item-title">Доставка по всему Казахстану</h3>
+                            <p class="features__item-description">Быстрая доставка во все регионы страны</p>
+                        </article>
+                        <article class="features__item">
+                            <span class="material-icons features__item-icon" aria-hidden="true">verified</span>
+                            <h3 class="features__item-title">Гарантия качества</h3>
+                            <p class="features__item-description">Только сертифицированные товары от официальных
+                                поставщиков</p>
+                        </article>
+                        <article class="features__item">
+                            <span class="material-icons features__item-icon" aria-hidden="true">payments</span>
+                            <h3 class="features__item-title">Удобная оплата</h3>
+                            <p class="features__item-description">Kaspi.kz и другие способы оплаты</p>
+                        </article>
+                        <article class="features__item">
+                            <span class="material-icons features__item-icon" aria-hidden="true">support_agent</span>
+                            <h3 class="features__item-title">Поддержка 24/7</h3>
+                            <p class="features__item-description">Консультации на русском и казахском языках</p>
+                        </article>
+                    </div>
                 </div>
-                <div class="hero__stat">
-                    <span class="hero__stat-number">24/7</span>
-                    <span class="hero__stat-label">техподдержка</span>
+            </section>
+
+            <section class="categories">
+                <div class="categories__container">
+                    <h2 class="categories__title">Популярные категории</h2>
+                    <div class="categories__grid">
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию 3D-печать">
+                                <span class="material-icons categories__card-icon" aria-hidden="true">3d_rotation</span>
+                                <h3 class="categories__card-title">3D-печать</h3>
+                                <p class="categories__card-description">Принтеры и расходные материалы</p>
+                            </a>
+                        </article>
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию Робототехника">
+                                <span class="material-icons categories__card-icon" aria-hidden="true">smart_toy</span>
+                                <h3 class="categories__card-title">Робототехника</h3>
+                                <p class="categories__card-description">Компоненты и готовые наборы</p>
+                            </a>
+                        </article>
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию Электроника">
+                                <span class="material-icons categories__card-icon" aria-hidden="true">memory</span>
+                                <h3 class="categories__card-title">Электроника</h3>
+                                <p class="categories__card-description">Компоненты и модули</p>
+                            </a>
+                        </article>
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию Программируемые устройства">
+                                <span class="material-icons categories__card-icon"
+                                      aria-hidden="true">developer_board</span>
+                                <h3 class="categories__card-title">Программируемые устройства</h3>
+                                <p class="categories__card-description">Arduino, Raspberry Pi и другие</p>
+                            </a>
+                        </article>
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию Инструменты">
+                                <span class="material-icons categories__card-icon" aria-hidden="true">build</span>
+                                <h3 class="categories__card-title">Инструменты</h3>
+                                <p class="categories__card-description">Всё для работы с электроникой</p>
+                            </a>
+                        </article>
+                        <article class="categories__card">
+                            <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
+                               aria-label="Перейти в категорию DIY-наборы">
+                                <span class="material-icons categories__card-icon"
+                                      aria-hidden="true">construction</span>
+                                <h3 class="categories__card-title">DIY-наборы</h3>
+                                <p class="categories__card-description">Наборы для самостоятельной сборки</p>
+                            </a>
+                        </article>
+                    </div>
+
+                    <div class="categories__more">
+                        <a href="{{ url_for("main.catalog") }}" class="categories__button categories__button--more"
+                           aria-label="Смотреть все категории товаров">
+                            <span class="material-icons categories__button-icon" aria-hidden="true">chevron_right</span>
+                            Смотреть все категории
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section class="features">
-        <div class="features__container">
-            <h2 class="features__title">Наши преимущества</h2>
-            <div class="features__grid">
-                <article class="features__item">
-                    <span class="material-icons features__item-icon" aria-hidden="true">local_shipping</span>
-                    <h3 class="features__item-title">Доставка по всему Казахстану</h3>
-                    <p class="features__item-description">Быстрая доставка во все регионы страны</p>
-                </article>
-                <article class="features__item">
-                    <span class="material-icons features__item-icon" aria-hidden="true">verified</span>
-                    <h3 class="features__item-title">Гарантия качества</h3>
-                    <p class="features__item-description">Только сертифицированные товары от официальных поставщиков</p>
-                </article>
-                <article class="features__item">
-                    <span class="material-icons features__item-icon" aria-hidden="true">payments</span>
-                    <h3 class="features__item-title">Удобная оплата</h3>
-                    <p class="features__item-description">Kaspi.kz и другие способы оплаты</p>
-                </article>
-                <article class="features__item">
-                    <span class="material-icons features__item-icon" aria-hidden="true">support_agent</span>
-                    <h3 class="features__item-title">Поддержка 24/7</h3>
-                    <p class="features__item-description">Консультации на русском и казахском языках</p>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <section class="categories">
-        <div class="categories__container">
-            <h2 class="categories__title">Популярные категории</h2>
-            <div class="categories__grid">
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию 3D-печать">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">3d_rotation</span>
-                        <h3 class="categories__card-title">3D-печать</h3>
-                        <p class="categories__card-description">Принтеры и расходные материалы</p>
-                    </a>
-                </article>
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию Робототехника">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">smart_toy</span>
-                        <h3 class="categories__card-title">Робототехника</h3>
-                        <p class="categories__card-description">Компоненты и готовые наборы</p>
-                    </a>
-                </article>
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию Электроника">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">memory</span>
-                        <h3 class="categories__card-title">Электроника</h3>
-                        <p class="categories__card-description">Компоненты и модули</p>
-                    </a>
-                </article>
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию Программируемые устройства">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">developer_board</span>
-                        <h3 class="categories__card-title">Программируемые устройства</h3>
-                        <p class="categories__card-description">Arduino, Raspberry Pi и другие</p>
-                    </a>
-                </article>
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию Инструменты">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">build</span>
-                        <h3 class="categories__card-title">Инструменты</h3>
-                        <p class="categories__card-description">Всё для работы с электроникой</p>
-                    </a>
-                </article>
-                <article class="categories__card">
-                    <a href="{{ url_for("main.catalog") }}" class="categories__card-link"
-                       aria-label="Перейти в категорию DIY-наборы">
-                        <span class="material-icons categories__card-icon" aria-hidden="true">construction</span>
-                        <h3 class="categories__card-title">DIY-наборы</h3>
-                        <p class="categories__card-description">Наборы для самостоятельной сборки</p>
-                    </a>
-                </article>
-            </div>
-
-            <div class="categories__more">
-                <a href="{{ url_for("main.catalog") }}" class="categories__button categories__button--more"
-                   aria-label="Смотреть все категории товаров">
-                    <span class="material-icons categories__button-icon" aria-hidden="true">chevron_right</span>
-                    Смотреть все категории
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta">
-        <div class="cta__container">
-            <div class="cta__content">
-                <h2 class="cta__title">Нужна консультация?</h2>
-                <p class="cta__description">
-                    Наши специалисты помогут подобрать оптимальное решение для вашего проекта
-                </p>
-                <div class="cta__actions">
-                    <a href="#" class="cta__button cta__button--contact"
-                       aria-label="Написать нам сообщение">
-                        <span class="material-icons cta__button-icon" aria-hidden="true">mail</span>
-                        Написать нам
-                    </a>
-                    <a href="tel:+77777777777" class="cta__button cta__button--call" aria-label="Позвонить нам">
-                        <span class="material-icons cta__button-icon" aria-hidden="true">phone</span>
-                        +7 (777) 777-77-77
-                    </a>
+            <section class="cta">
+                <div class="cta__container">
+                    <div class="cta__content">
+                        <h2 class="cta__title">Нужна консультация?</h2>
+                        <p class="cta__description">
+                            Наши специалисты помогут подобрать оптимальное решение для вашего проекта
+                        </p>
+                        <div class="cta__actions">
+                            <a href="#" class="cta__button cta__button--contact"
+                               aria-label="Написать нам сообщение">
+                                <span class="material-icons cta__button-icon" aria-hidden="true">mail</span>
+                                Написать нам
+                            </a>
+                            <a href="tel:+77777777777" class="cta__button cta__button--call" aria-label="Позвонить нам">
+                                <span class="material-icons cta__button-icon" aria-hidden="true">phone</span>
+                                +7 (777) 777-77-77
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </section>
 {% endblock %}
