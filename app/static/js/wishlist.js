@@ -1,65 +1,47 @@
 import {fetchApi} from "./utils/api.js";
 
-/** Инициализирует функциональность добавления товаров в избранное */
-const initAddWishlist = () => {
-    document.body.addEventListener("click", async (e) => {
-        const addWishlistButton = e.target.closest(".product-card__action-button--wishlist");
-        if (addWishlistButton && !addWishlistButton.disabled) {
-            addWishlistButton.disabled = true;
 
-            const productId = addWishlistButton.dataset.productId;
-            const icon = addWishlistButton.querySelector(".product-card__action-button-icon");
+document.addEventListener("DOMContentLoaded", () => {
+    initWishlistFunctionality();
+});
+
+/** Инициализирует функциональность списка желаний для добавления и удаления продуктов */
+function initWishlistFunctionality() {
+    document.body.addEventListener("click", async (e) => {
+        const wishlistButton = e.target.closest(".product-card__action-button--wishlist, .product-card__action-button--in-wishlist");
+
+        if (wishlistButton && !wishlistButton.disabled) {
+            wishlistButton.disabled = true;
+
+            const productId = wishlistButton.dataset.productId;
+            const icon = wishlistButton.querySelector(".product-card__action-button-icon");
+            const isInWishlist = wishlistButton.classList.contains("product-card__action-button--in-wishlist");
 
             try {
-                await fetchApi(`/api/wishlist/${productId}`, {method: "PUT"});
-                addWishlistButton.classList.remove("product-card__action-button--wishlist");
-                addWishlistButton.classList.add("product-card__action-button--in-wishlist");
-                if (icon) {
-                    icon.textContent = icon.textContent.trim() === "bookmark"
-                        ? "bookmark_add"
-                        : "bookmark";
+                const method = isInWishlist ? "DELETE" : "PUT";
+                const res = await fetchApi(`/api/wishlist/${productId}`, {method});
+
+                if (!res) return;
+
+                if (isInWishlist) {
+                    wishlistButton.classList.remove("product-card__action-button--in-wishlist");
+                    wishlistButton.classList.add("product-card__action-button--wishlist");
+                    if (icon && icon.textContent.trim() === "bookmark_add") {
+                        icon.textContent = "bookmark";
+                    }
+                } else {
+                    wishlistButton.classList.remove("product-card__action-button--wishlist");
+                    wishlistButton.classList.add("product-card__action-button--in-wishlist");
+                    if (icon && icon.textContent.trim() === "bookmark") {
+                        icon.textContent = "bookmark_add";
+                    }
                 }
             } catch (err) {
-                console.error("%c[Wishlist] Ошибка при добавлении в избранное:", "color: red; font-weight: bold;", err);
+                const action = isInWishlist ? "удалении из" : "добавлении в";
+                console.error(`%c[Wishlist] Ошибка при ${action} избранное:`, "color: red; font-weight: bold;", err);
             } finally {
-                addWishlistButton.disabled = false;
+                wishlistButton.disabled = false;
             }
         }
     });
 }
-
-/** Инициализирует функциональность удаления товаров из избранного */
-const initRemoveWishlist = () => {
-    document.body.addEventListener("click", async (e) => {
-        const removeWishlistButton = e.target.closest(".product-card__action-button--in-wishlist");
-        if (removeWishlistButton && !removeWishlistButton.disabled) {
-            removeWishlistButton.disabled = true;
-
-            const productId = removeWishlistButton.dataset.productId;
-            const icon = removeWishlistButton.querySelector(".product-card__action-button-icon");
-
-            try {
-                await fetchApi(`/api/wishlist/${productId}`, {method: "DELETE"});
-                removeWishlistButton.classList.remove("product-card__action-button--in-wishlist");
-                removeWishlistButton.classList.add("product-card__action-button--wishlist");
-                if (icon) {
-                    icon.textContent = icon.textContent.trim() === "bookmark_add"
-                        ? "bookmark"
-                        : "bookmark_add";
-                }
-            } catch (err) {
-                console.error("%c[Wishlist] Ошибка при удалении из избранного:", "color: red; font-weight: bold;", err);
-            } finally {
-                removeWishlistButton.disabled = false;
-            }
-        }
-    });
-}
-
-/** Главная функция инициализации функциональности избранного */
-const init = () => {
-    initAddWishlist()
-    initRemoveWishlist()
-}
-
-document.addEventListener("DOMContentLoaded", init);
