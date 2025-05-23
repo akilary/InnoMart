@@ -3,24 +3,22 @@ from flask_login import login_required, current_user, logout_user
 
 from ..utils import delete_user
 
-user_bp = Blueprint("user", __name__, url_prefix="/user")
+profile_bp = Blueprint("profile", __name__, url_prefix="/profile")
 
 
-# Профиль пользователя
-@user_bp.route("/profile", methods=["GET", "POST"])
+@profile_bp.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     return render_template("profile.html")
 
 
-# Удаление аккаунта
-@user_bp.route("/delete_account", methods=["POST"])
+@profile_bp.route("/delete_profile", methods=["POST"])
 @login_required
-def delete_account():
+def delete_profile():
     try:
         delete_user(current_user.email)
         logout_user()
-        flash("Ваш аккаунт удален", "danger")
+        flash("Ваш профиль удален", "danger")
     except RuntimeError as e:
         flash(str(e), "danger")
     return redirect(url_for("main.home"))

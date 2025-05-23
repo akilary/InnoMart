@@ -1,0 +1,46 @@
+{% extends "admin/master.html" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="display-4">Добро пожаловать</h1>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Выйти</a>
+        </div>
+        <p class="lead">Вы находитесь в админ-панели <strong>Inno Mart</strong>.</p>
+
+        <hr class="my-4">
+
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card border-primary mb-3">
+                    <div class="card-header bg-primary text-white">Пользователи</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user_count }} шт.</h5>
+                        <p class="card-text">Всего зарегистрировано</p>
+                        <a href="{{ url_for('userview.index_view') }}" class="btn btn-outline-primary">Управлять</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success mb-3">
+                    <div class="card-header bg-success text-white">Товары</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product_count }} шт.</h5>
+                        <p class="card-text">В наличии в базе</p>
+                        <a href="{{ url_for('productview.index_view') }}" class="btn btn-outline-success">Управлять</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header bg-info text-white">Списки желаний</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ wishlist_count }} шт.</h5>
+                        <p class="card-text">Общее количество записей</p>
+                        <a href="{{ url_for('wishlistview.index_view') }}" class="btn btn-outline-info">Управлять</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

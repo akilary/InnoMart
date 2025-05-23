@@ -4,7 +4,6 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for("static", filename="css/profile.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/modal.css") }}">
 {% endblock %}
 
 {% block content %}
@@ -44,6 +43,13 @@
                         <span class="material-icons profile__nav-item-icon">settings</span>
                         <span class="profile__nav-item-text">Настройки</span>
                     </button>
+                    {% if current_user.role == "admin" %}
+                        <button class="profile__nav-item"
+                                onclick="window.location.href='{{ url_for("admin.index") }}'">
+                            <span class="material-icons profile__nav-item-icon">admin_panel_settings</span>
+                            <span class="profile__nav-item-text">Админ панель</span>
+                        </button>
+                    {% endif %}
                 </nav>
 
                 <div class="profile__support">
@@ -53,7 +59,7 @@
                             Нужна помощь?
                         </h3>
                         <p class="profile__support-text">Наша поддержка на связи 24/7</p>
-                        <a href="{{ url_for("main.contacts") }}" class="profile__support-button">
+                        <a href="#" class="profile__support-button">
                             Написать в поддержку
                         </a>
                     </div>
@@ -103,7 +109,7 @@
                                 <span class="material-icons profile__action-card-icon">edit</span>
                                 <span class="profile__action-card-text">Редактировать профиль</span>
                             </button>
-                            <a href="{{ url_for("main.contacts") }}" class="profile__action-card">
+                            <a href="#" class="profile__action-card">
                                 <span class="material-icons profile__action-card-icon">help</span>
                                 <span class="profile__action-card-text">Помощь</span>
                             </a>
