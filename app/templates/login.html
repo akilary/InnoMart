@@ -8,8 +8,8 @@
 
 {% block content %}
     <section class="auth">
-        <div class="main__container auth__container">
-            <h2 class="auth__title">Вход в аккаунт</h2>
+        <div class="auth__container">
+            <h1 class="auth__title">Вход в аккаунт</h1>
             <form action="{{ url_for("auth.login") }}" method="post" class="auth__form">
                 {{ form.hidden_tag() }}
 

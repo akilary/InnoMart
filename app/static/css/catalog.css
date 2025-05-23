@@ -170,6 +170,7 @@
     border: 1px solid var(--color-border);
     background-color: var(--color-surface);
     outline: none;
+    border-radius: var(--border-radius-sm);
 }
 
 .catalog__filter-price-input:focus { border-color: var(--color-accent);
@@ -382,7 +383,7 @@
 }
 
 .catalog__filter-button--reset:hover {
-    color: var(--color-danger);
+    color: #FFA000;
     background-color: rgba(211, 47, 47, 0.08);
     transform: translateY(-2px);
 }
@@ -463,30 +464,3 @@
 }
 
 .catalog__load-more-button--show:hover .catalog__filter-button-icon { transform: translateY(3px); }
-
-@media (max-width: 768px) {
-    .catalog__filter {
-        flex: 1 1 100%;
-    }
-
-    .catalog__filter-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .catalog__count {
-        margin-left: 0;
-        margin-top: var(--spacing-sm);
-        text-align: center;
-    }
-
-    .catalog__cards { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-}
-
-@media (max-width: 576px) {
-    .catalog__search-input { max-width: 100%; }
-
-    .catalog__filter-price { flex-direction: column; }
-
-    .catalog__cards { grid-template-columns: 1fr; }
-}
