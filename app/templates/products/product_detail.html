@@ -1,0 +1,172 @@
+{% extends "layout/base.html" %}
+
+{% block title %}{{ product.name }} - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/products/product_detail.css") }}">
+{% endblock %}
+
+{% block content %}
+    <section class="product">
+        <div class="main__container product__container">
+            <header class="product__header">
+                <h1 class="product__title">{{ product.name }}</h1>
+                <div class="product__meta">
+                    <span class="product__code">
+                        <span class="material-icons product__code-icon">qr_code</span>
+                        Код товара: {{ product.id }}
+                    </span>
+                </div>
+            </header>
+
+            <div class="product__content">
+                <div class="product__gallery">
+                    <div class="product__main-image">
+                        <img src="{{ product.image_url }}"
+                             alt="{{ product.name }}" class="product__image">
+                    </div>
+                    <div class="product__thumbnails">
+                        <button class="product__thumbnail product__thumbnail--active">
+                            <img src="{{ product.image_url }}"
+                                 alt="{{ product.name }}" class="product__thumbnail-image">
+                        </button>
+                        {% for image in product.gallery_images.all() %}
+                            <button class="product__thumbnail">
+                                <img src="{{ image.image_url }}"
+                                     alt="{{ product.name }}" class="product__thumbnail-image">
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="product__info">
+                    <div class="product__price-block">
+                        <div class="product__price">{{ product.price }} ₸</div>
+                    </div>
+
+                    <div class="product__availability {% if product.stock > 0 %}
+                    product__availability--in-stock{% else %}product__availability--out-of-stock{% endif %}">
+                        <span class="material-icons product__availability-icon">{% if product.stock > 0 %}
+                            check_circle{% else %}cancel{% endif %}
+                        </span>
+                        {% if product.stock > 0 %}В наличии{% else %}Нет в наличии{% endif %}
+                    </div>
+
+                    <div class="product__stock">
+                        <span class="material-icons product__stock-icon">inventory_2</span>
+                        Остаток: {{ product.stock }} шт.
+                    </div>
+
+                    <form class="product__actions">
+                        <div class="product__quantity">
+                            <label for="quantity" class="product__quantity-label">Количество:</label>
+                            <div class="product__quantity-control">
+                                <button type="button" id="decrease-quantity"
+                                        class="product__quantity-button product__quantity-button--decrease"
+                                        aria-label="Уменьшить количество">
+                                    <span class="material-icons product__quantity-button-icon">remove</span>
+                                </button>
+                                <input type="number" id="quantity" class="product__quantity-input" name="quantity"
+                                       value="1" min="1" max="{{ product.stock }}">
+                                <button type="button" id="increase-quantity"
+                                        class="product__quantity-button product__quantity-button--increase"
+                                        aria-label="Увеличить количество">
+                                    <span class="material-icons product__quantity-button-icon">add</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="product__buttons">
+                            <button type="button"
+                                    class="product__button product__button--cart product__button--primary"
+                                    data-product-id="{{ product.id }}">
+                                <span class="material-icons product__button-icon">shopping_cart</span>
+                                Добавить в корзину
+                            </button>
+                            <button type="button"
+                                    class="product__button product__button--wishlist product__button--outline"
+                                    data-product-id="{{ product.id }}">
+                                <span class="material-icons product__button-icon">favorite_border</span>
+                                В избранное
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="product__features">
+                        <div class="product__feature">
+                            <span class="material-icons product__feature-icon">local_shipping</span>
+                            <div class="product__feature-text">
+                                <h3 class="product__feature-title">Доставка</h3>
+                                <p class="product__feature-description">Доставка по всему Казахстану</p>
+                            </div>
+                        </div>
+                        <div class="product__feature">
+                            <span class="material-icons product__feature-icon">verified</span>
+                            <div class="product__feature-text">
+                                <h3 class="product__feature-title">Гарантия</h3>
+                                <p class="product__feature-description">12 месяцев официальной гарантии</p>
+                            </div>
+                        </div>
+                        <div class="product__feature">
+                            <span class="material-icons product__feature-icon">payments</span>
+                            <div class="product__feature-text">
+                                <h3 class="product__feature-title">Оплата</h3>
+                                <p class="product__feature-description">Kaspi.kz и другие способы оплаты</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product__tabs">
+                <div class="product__tabs-wrapper">
+                    <div class="product__tabs-header">
+                        <button class="product__tabs-button product__tabs-button--active" data-tab="description">
+                            <span class="material-icons product__tabs-button-icon">description</span>
+                            Описание
+                        </button>
+                        <button class="product__tabs-button" data-tab="specifications">
+                            <span class="material-icons product__tabs-button-icon">settings</span>
+                            Характеристики
+                        </button>
+                    </div>
+
+                    <div class="product__tabs-content">
+                        <div class="product__tabs-panel product__tabs-panel--active" id="description">
+                            <div class="product__description">
+                                <h2 class="product__section-title">Описание</h2>
+                                <div class="product__description-content">
+                                    {{ product.description|safe }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product__tabs-panel" id="specifications">
+                            <div class="product__specifications">
+                                <h2 class="product__section-title">Технические характеристики</h2>
+                                {% if product.specs %}
+                                    <table class="product__specifications-table">
+                                        <tbody>
+                                        {% for spec in product.specs %}
+                                            <tr class="product__specifications-table-row">
+                                                <th class="product__specifications-table-header">{{ spec.name }}</th>
+                                                <td class="product__specifications-table-data">{{ spec.value }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <p class="product__empty-message">Характеристики отсутствуют</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for("static", filename="js/products/product_detail.js") }}"></script>
+{% endblock %}

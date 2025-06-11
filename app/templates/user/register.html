@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Регистрация - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/user/auth.css") }}">
 {% endblock %}
 
 {% block content %}
@@ -58,7 +58,7 @@
                     <label for="register-confirm-password" class="auth__label">Подтверждение пароля:</label>
                     <div class="auth__password-wrapper">
                         {{ form.confirm_password }}
-                        <button class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
+                        <button type="button" class="auth__password-toggle" aria-label="Показать/Скрыть пароль">
                             <span class="material-icons auth__password-toggle-icon">visibility_off</span>
                         </button>
                     </div>
@@ -83,5 +83,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for("static", filename="js/auth.js") }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/user/auth.js") }}"></script>
 {% endblock %}

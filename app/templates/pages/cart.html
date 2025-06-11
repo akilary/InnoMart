@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Корзина - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/cart.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/pages/cart.css") }}">
 {% endblock %}
 
 {% block content %}
     <section class="cart">
-        <div class="main__container cart__container">
+        <div class="cart__container">
             <h1 class="cart__title">Корзина</h1>
 
             <div class="cart__content">
@@ -22,7 +22,8 @@
                                     </div>
                                     <div class="cart__item-details">
                                         <div class="cart__item-info">
-                                            <h3 class="cart__item-title">{{ item.name }}</h3>
+                                            <a href="{{ url_for("main.product_details", product_id=item.id) }}"
+                                               class="cart__item-title">{{ item.name }}</a>
                                         </div>
                                         <div class="cart__item-pricing">
                                             <div class="cart__item-price-container">
@@ -33,7 +34,8 @@
                                                         aria-label="Уменьшить количество">
                                                     <span class="material-icons cart__quantity-icon">remove</span>
                                                 </button>
-                                                <input type="number" class="cart__quantity-input" value="{{ item.quantity }}" min="1" max="99"
+                                                <input type="number" class="cart__quantity-input"
+                                                       value="{{ item.quantity }}" min="1" max="99"
                                                        aria-label="Количество товара">
                                                 <button class="cart__quantity-button cart__quantity-increase"
                                                         aria-label="Увеличить количество">
@@ -44,7 +46,7 @@
                                         <div class="cart__item-actions">
                                             <button class="cart__item-action cart__item-action--wishlist"
                                                     aria-label="Добавить в избранное">
-                                                <span class="material-icons cart__item-action-icon">favorite_border</span>
+                                                <span class="material-icons cart__item-action-icon">bookmark_add</span>
                                             </button>
                                             <button class="cart__item-action cart__item-action--remove"
                                                     aria-label="Удалить из корзины">
@@ -61,7 +63,7 @@
                                 <span class="material-icons cart__empty-icon">shopping_cart</span>
                                 <h2 class="cart__empty-title">Ваша корзина пуста</h2>
                                 <p class="cart__empty-text">Добавьте товары в корзину, чтобы оформить заказ</p>
-                                <a href="{{ url_for('main.catalog') }}" class="cart__button cart__button--action">
+                                <a href="{{ url_for("main.catalog") }}" class="cart__button cart__button--action">
                                     <span class="material-icons cart__button-icon">store</span>
                                     Перейти в каталог
                                 </a>
@@ -75,7 +77,7 @@
                             <span class="material-icons cart__button-icon">remove_shopping_cart</span>
                             Очистить корзину
                         </button>
-                        <a href="{{ url_for('main.catalog') }}" class="cart__button cart__button--info">
+                        <a href="{{ url_for("main.catalog") }}" class="cart__button cart__button--info">
                             <span class="material-icons cart__button-icon">arrow_back</span>
                             Продолжить покупки
                         </a>
@@ -92,13 +94,13 @@
                             <div class="cart__summary-row">
                                 <span class="cart__summary-label">Товары ({{ user_cart|length }}):</span>
                                 <span class="cart__summary-value" id="cart-subtotal">
-                                    {{ user_cart|sum(attribute='total_price') }} ₸
+                                    {{ user_cart|sum(attribute="total_price") }} ₸
                                 </span>
                             </div>
                             <div class="cart__summary-row">
                                 <span class="cart__summary-label">Доставка:</span>
                                 <span class="cart__summary-value" id="cart-shipping">
-                                    {% set subtotal = user_cart|sum(attribute='total_price') %}
+                                    {% set subtotal = user_cart|sum(attribute="total_price") %}
                                     {% if subtotal >= 20000 %}
                                         0 ₸
                                     {% else %}
@@ -113,7 +115,7 @@
                         <div class="cart__summary-total">
                             <span class="cart__summary-total-label">Итого к оплате:</span>
                             <span class="cart__summary-total-value" id="cart-total">
-                                {% set subtotal = user_cart|sum(attribute='total_price') %}
+                                {% set subtotal = user_cart|sum(attribute="total_price") %}
                                 {% set shipping = 0 if subtotal >= 20000 else 1500 %}
                                 {{ subtotal + shipping }} ₸
                             </span>
@@ -145,5 +147,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/pages/cart.js") }}"></script>
 {% endblock %}

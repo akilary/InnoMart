@@ -69,3 +69,87 @@ class LoginForm(FlaskForm):
         }
     )
     submit = SubmitField("Войти", render_kw={"class": "auth__submit"})
+
+
+class AddressForm(FlaskForm):
+    city = StringField(
+        "Город",
+        validators=[DataRequired()],
+        render_kw={
+            "id": "address-city",
+            "class": "modal__input",
+            "placeholder": "Введите город",
+            "autocomplete": "address-level2"
+        }
+    )
+    street = StringField(
+        "Улица",
+        validators=[DataRequired()],
+        render_kw={
+            "id": "address-street",
+            "class": "modal__input",
+            "placeholder": "Введите улицу",
+            "autocomplete": "address-line1"
+        }
+    )
+    postcode = StringField(
+        "Почтовый индекс",
+        validators=[DataRequired()],
+        render_kw={
+            "id": "address-postcode",
+            "class": "modal__input",
+            "placeholder": "Введите почтовый индекс",
+            "autocomplete": "postal-code"
+        }
+    )
+
+    submit = SubmitField(
+        "Сохранить",
+        render_kw={
+            "class": "modal__button modal__button--primary",
+            "form": "addressForm",
+            "data-action": "save"
+        }
+    )
+
+
+class PersonalForm(FlaskForm):
+    username = StringField(
+        "Имя",
+        validators=[DataRequired()],
+        render_kw={
+            "id": "personal-username",
+            "class": "modal__input",
+            "placeholder": "Введите имя",
+            "autocomplete": "name"
+        }
+    )
+    email = EmailField(
+        "Email",
+        validators=[DataRequired(), Email(message="Введите корректный email.")],
+        render_kw={
+            "id": "personal-email",
+            "class": "modal__input",
+            "placeholder": "Введите email",
+            "autocomplete": "email"
+        }
+    )
+    phone = StringField(
+        "Телефон",
+        validators=[DataRequired()],
+        render_kw={
+            "id": "personal-phone",
+            "class": "modal__input",
+            "placeholder": "Введите телефон",
+            "autocomplete": "tel"
+        }
+    )
+
+    submit = SubmitField(
+        "Сохранить",
+        render_kw={
+            "class": "modal__button modal__button--primary",
+            "form": "personalForm",
+            "data-action": "save"
+        }
+    )

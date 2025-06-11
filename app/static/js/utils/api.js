@@ -16,11 +16,13 @@ export async function fetchApi(url, options = {}) {
             return;
         }
 
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error(`Ошибка запроса: ${response.status}`);
+            throw new Error(data.message || `Ошибка запроса: ${response.status}`);
         }
 
-        return await response.json();
+        return await data;
     } catch (error) {
         console.error(`%c[API] Ошибка при запросе ${url}:`, 'color: red; font-weight: bold;', error);
         throw error;

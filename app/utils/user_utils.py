@@ -1,6 +1,7 @@
 from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from .shared import get_user_by_id
 from ..extensions import db
 from ..models import User
 
@@ -43,3 +44,65 @@ def delete_user(email: str) -> None:
     except Exception as e:
         db.session.rollback()
         raise RuntimeError("Ошибка удаления пользователя.") from e
+
+
+def update_user_personal_info(user_id: int, data: dict) -> User:
+    """Обновляет личные данные пользователя"""
+    user = get_user_by_id(user_id)
+
+    if "email" in data and data["email"] != user.email:
+        existing_user = User.query.filter_by(email=data["email"]).first()
+        if existing_user:
+            raise ValueError("Этот email уже используется другим пользователем")
+
+    print(data)
+    if "username" in data and data["username"]:
+        user.username = data["username"]
+    if "email" in data and data["email"]:
+        user.email = data["email"]
+    if "phone" in data:
+        user.phone = data["phone"]
+    
+    try:
+        db.session.commit()
+        return user
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Ошибка обновления данных: {str(e)}") from e
+
+
+def update_user_address(user_id: int, data: dict) -> User:
+    """Обновляет адрес доставки пользователя"""
+    user = get_user_by_id(user_id)
+
+    if "city" in data:
+        user.city = data["city"]
+    if "street" in data:
+        user.street = data["street"]
+    if "postcode" in data:
+        user.postcode = data["postcode"]
+    
+    try:
+        db.session.commit()
+        return user
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Ошибка обновления адреса: {str(e)}") from e
+
+
+def update_user_password(user_id: int, current_password: str, new_password: str) -> User:
+    """Обновляет пароль пользователя"""
+    user = get_user_by_id(user_id)
+
+    if not check_password_hash(user.password, current_password):
+        raise ValueError("Неверный текущий пароль")
+
+    user.password = generate_password_hash(new_password)
+    
+    try:
+        db.session.commit()
+        return user
+    except Exception as e:
+        db.session.rollback()
+        raise RuntimeError(f"Ошибка обновления пароля: {str(e)}") from e
+

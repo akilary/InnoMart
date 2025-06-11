@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
 from ..forms import RegistrationForm, LoginForm
 from ..utils import create_user, authenticate_user
@@ -21,7 +21,7 @@ def register():
         except RuntimeError as e:
             flash(str(e), "danger")
 
-    return render_template("register.html", form=form)
+    return render_template("user/register.html", form=form)
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
@@ -36,10 +36,11 @@ def login():
         except ValueError as e:
             flash(str(e), "danger")
 
-    return render_template("login.html", form=form)
+    return render_template("user/login.html", form=form)
 
 
 @auth_bp.route("/logout", methods=["POST"])
+@login_required
 def logout():
     logout_user()
     flash("Вы вышли из системы", "info")

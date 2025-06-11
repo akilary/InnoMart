@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Профиль - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/profile.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/user/profile.css") }}">
 {% endblock %}
 
 {% block content %}
@@ -33,23 +33,16 @@
                         {% endif %}
                     </button>
                     <button class="profile__nav-item" data-section="favorites">
-                        <span class="material-icons profile__nav-item-icon">favorite</span>
+                        <span class="material-icons profile__nav-item-icon">bookmark</span>
                         <span class="profile__nav-item-text">Избранное</span>
-                        {% if wishlist_data %}
-                            <span class="profile__nav-badge">{{ wishlist_data|length }}</span>
+                        {% if wishlist_items %}
+                            <span class="profile__nav-badge">{{ wishlist_items|length }}</span>
                         {% endif %}
                     </button>
                     <button class="profile__nav-item" data-section="settings">
                         <span class="material-icons profile__nav-item-icon">settings</span>
                         <span class="profile__nav-item-text">Настройки</span>
                     </button>
-                    {% if current_user.role == "admin" %}
-                        <button class="profile__nav-item"
-                                onclick="window.location.href='{{ url_for("admin.index") }}'">
-                            <span class="material-icons profile__nav-item-icon">admin_panel_settings</span>
-                            <span class="profile__nav-item-text">Админ панель</span>
-                        </button>
-                    {% endif %}
                 </nav>
 
                 <div class="profile__support">
@@ -88,7 +81,7 @@
                                 <span class="material-icons profile__stat-icon-icon">favorite</span>
                             </div>
                             <div class="profile__stat-info">
-                                <span class="profile__stat-value">{{ wishlist_data|length if wishlist_data else 0 }}</span>
+                                <span class="profile__stat-value">{{ wishlist_items|length if wishlist_items else 0 }}</span>
                                 <span class="profile__stat-label">В избранном</span>
                             </div>
                         </div>
@@ -113,6 +106,12 @@
                                 <span class="material-icons profile__action-card-icon">help</span>
                                 <span class="profile__action-card-text">Помощь</span>
                             </a>
+                            {% if current_user.role == "admin" %}
+                                <a href="{{ url_for("admin.index") }}" class="profile__action-card">
+                                    <span class="material-icons profile__action-card-icon">admin_panel_settings</span>
+                                    <span class="profile__action-card-text">Админ панель</span>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -130,7 +129,7 @@
                                     <div class="profile__order-card">
                                         <div class="profile__order-header">
                                             <span class="profile__order-number">#{{ order.id }}</span>
-                                            <span class="profile__order-status profile__order-status--{{ normalize_status(order.status) }}">{{ order.status }}</span>
+                                            <span class="profile__order-status profile__order-status--{{ order.status_key }}">{{ order.status }}</span>
                                         </div>
                                         <div class="profile__order-info">
                                             <p class="profile__order-date">{{ order.created_at.strftime('%d.%m.%Y') }}</p>
@@ -159,12 +158,12 @@
 
                     {% if orders %}
                         <div class="profile__orders-list">
-                            {% for order in orders %}
-                                <div class="profile__order-item">
+                            {% for order in orders  %}
+                                <div class="profile__order-item" data-order-id="{{ order.id }}">
                                     <div class="profile__order-main">
                                         <div class="profile__order-header">
                                             <span class="profile__order-number">#{{ order.id }}</span>
-                                            <span class="profile__order-status profile__order-status--{{ normalize_status(order.status) }}">{{ order.status }}</span>
+                                            <span class="profile__order-status profile__order-status--{{ order.status_key }}">{{ order.status }}</span>
                                         </div>
                                         <div class="profile__order-details">
                                             <p class="profile__order-date">{{ order.created_at.strftime('%d.%m.%Y') }}</p>
@@ -199,22 +198,20 @@
                         <p class="profile__header-subtitle">Товары, которые вам понравились</p>
                     </div>
 
-                    {% if wishlist_data %}
+                    {% if wishlist_items %}
                         <div class="profile__wishlist-grid">
-                            {% for item in wishlist_data %}
+                            {% for item in wishlist_items %}
                                 <div class="product-card">
                                     <div class="product-card__img-wrapper">
-                                        <img src="{{ item.image }}" alt="{{ item.name }}" class="product-card__img">
+                                        <img src="{{ item.image_url }}" alt="{{ item.name }}" class="product-card__img">
                                     </div>
                                     <div class="product-card__body">
-                                        <h3 class="product-card__title">{{ item.name }}</h3>
+                                        <a href="{{ url_for("main.product_details", product_id=item.id) }}"
+                                           class="product-card__title">{{ item.name }}
+                                        </a>
                                         <p class="product-card__price">{{ item.price }} ₸</p>
                                     </div>
                                     <div class="product-card__actions">
-                                        <button class="product-card__action-button product-card__action-button--favorite product-card__action-button--active"
-                                                data-product-id="{{ item.id }}">
-                                            <span class="material-icons product-card__action-button-icon">favorite</span>
-                                        </button>
                                         <button class="product-card__action-button product-card__action-button--remove"
                                                 data-product-id="{{ item.id }}">
                                             <span class="material-icons product-card__action-button-icon">close</span>
@@ -282,7 +279,8 @@
                                 <dl class="profile__settings-list">
                                     <div class="profile__settings-item">
                                         <dt class="profile__settings-term">Город</dt>
-                                        <dd class="profile__settings-description">{{ current_user.city or "Не указан" }}</dd>
+                                        <dd class="profile__settings-description">
+                                            {{ current_user.city or current_user }}</dd>
                                     </div>
                                     <div class="profile__settings-item">
                                         <dt class="profile__settings-term">Улица</dt>
@@ -305,17 +303,26 @@
                                     <span class="material-icons profile__settings-button-icon">lock</span>
                                     <span class="profile__settings-button-text">Изменить пароль</span>
                                 </button>
-                                <button class="profile__settings-button profile__settings-delete-account">
-                                    <span class="material-icons profile__settings-button-icon">delete_forever</span>
-                                    <span class="profile__settings-button-text">Удалить аккаунт</span>
-                                </button>
-                                <button class="profile__settings-button profile__settings-logout">
-                                    <span class="material-icons profile__settings-button-icon">logout</span>
-                                    <span class="profile__settings-button-text">Выход</span>
-                                </button>
+                                <form class="profile__settings-form" action="{{ url_for("profile.delete_profile") }}"
+                                      method="post"
+                                      onsubmit="return confirm('Вы точно хотите удалить аккаунт? Это действие необратимо!')">
+                                    <button type="submit"
+                                            class="profile__settings-button profile__settings-delete-account">
+                                        <span class="material-icons profile__settings-button-icon">delete_forever</span>
+                                        <span class="profile__settings-button-text">Удалить аккаунт</span>
+                                    </button>
+                                </form>
+                                <form class="profile__settings-form" action="{{ url_for("auth.logout") }}"
+                                      method="post"
+                                      onsubmit="return confirm('Вы действительно хотите выйти из аккаунта?')">
+                                    <button type="submit"
+                                            class="profile__settings-button profile__settings-logout">
+                                        <span class="material-icons profile__settings-button-icon">logout</span>
+                                        <span class="profile__settings-button-text">Выход</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
-
 
                         <div class="profile__settings-card">
                             <div class="profile__settings-header">
@@ -323,12 +330,14 @@
                             </div>
                             <div class="profile__settings-content">
                                 <label class="profile__settings-toggle" for="email-notifications">
-                                    <input type="checkbox" id="email-notifications" checked>
+                                    <input class="profile__settings-toggle-input"
+                                           type="checkbox" id="email-notifications" checked>
                                     <span class="profile__settings-toggle-switch"></span>
                                     <span class="profile__settings-toggle-label">Email-уведомления</span>
                                 </label>
                                 <label class="profile__settings-toggle" for="sms-notifications">
-                                    <input type="checkbox" id="sms-notifications" checked>
+                                    <input class="profile__settings-toggle-input"
+                                           type="checkbox" id="sms-notifications" checked>
                                     <span class="profile__settings-toggle-switch"></span>
                                     <span class="profile__settings-toggle-label">SMS-уведомления</span>
                                 </label>
@@ -339,9 +348,11 @@
             </section>
         </div>
     </section>
+
+    {% include "components/address-modal.html" %}
+    {% include "components/personal-modal.html" %}
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for("static", filename="js/profile.js") }}"></script>
-    <script type="module" src="{{ url_for("static", filename="js/wishlist.js") }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/user/profile.js") }}"></script>
 {% endblock %}

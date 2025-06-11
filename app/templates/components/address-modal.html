@@ -1,0 +1,29 @@
+<div id="addressModal" class="modal">
+    <div class="modal__content">
+        <div class="modal__header">
+            <h2 class="modal__title">Редактирование адреса доставки</h2>
+            <button class="modal__close" aria-label="Закрыть">&times;</button>
+        </div>
+        <div class="modal__body">
+            <form id="addressForm" class="modal__form" method="POST">
+                {{ address_form.hidden_tag() }}
+                <div class="modal__form-group">
+                    <label for="address-city" class="modal__label">Город</label>
+                    {{ address_form.city(value=current_user.city or "") }}
+                </div>
+                <div class="modal__form-group">
+                    <label for="address-street" class="modal__label">Улица</label>
+                    {{ address_form.street(value=current_user.street or "") }}
+                </div>
+                <div class="modal__form-group">
+                    <label for="address-postcode" class="modal__label">Индекс</label>
+                    {{ address_form.postcode(value=current_user.postal_code or "") }}
+                </div>
+            </form>
+        </div>
+        <div class="modal__footer">
+            <button type="submit" class="modal__button modal__button--secondary" data-action="close">Отмена</button>
+            {{ address_form.submit }}
+        </div>
+    </div>
+</div>

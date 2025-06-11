@@ -41,6 +41,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="card border-warning mb-3">
+                    <div class="card-header bg-warning text-dark">Заказы</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ order_count }} шт.</h5>
+                        <p class="card-text">Всего оформлено</p>
+                        <a href="{{ url_for('orderview.index_view') }}" class="btn btn-outline-warning">Управлять</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-secondary mb-3">
+                    <div class="card-header bg-secondary text-white">Категории</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category_count }} шт.</h5>
+                        <p class="card-text">Всего категорий</p>
+                        <a href="{{ url_for('categoryview.index_view') }}" class="btn btn-outline-secondary">Управлять</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

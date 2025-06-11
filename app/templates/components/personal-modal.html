@@ -1,0 +1,29 @@
+<div id="personalModal" class="modal">
+    <div class="modal__content">
+        <div class="modal__header">
+            <h2 class="modal__title">Редактирование личных данных</h2>
+            <button class="modal__close" aria-label="Закрыть">&times;</button>
+        </div>
+        <div class="modal__body">
+            <form id="personalForm" class="modal__form" method="POST">
+                {{ personal_form.hidden_tag() }}
+                <div class="modal__form-group">
+                    <label for="personal-username" class="modal__label">Имя</label>
+                    {{ personal_form.username(value=current_user.username) }}
+                </div>
+                <div class="modal__form-group">
+                    <label for="personal-email" class="modal__label">Email</label>
+                    {{ personal_form.email(value=current_user.email) }}
+                </div>
+                <div class="modal__form-group">
+                    <label for="personal-phone" class="modal__label">Телефон</label>
+                    {{ personal_form.phone(value=current_user.phone or "") }}
+                </div>
+            </form>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="modal__button modal__button--secondary" data-action="close">Отмена</button>
+            {{ personal_form.submit }}
+        </div>
+    </div>
+</div>

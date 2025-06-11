@@ -6,8 +6,7 @@ from ..models import Product, Cart
 def get_cart_quantity(user_id: int) -> int:
     """Возвращает количество товаров в корзине пользователя"""
     user = get_user_by_id(user_id)
-    cart_items = Cart.query.filter_by(user_id=user.id).all()
-    return sum(item.quantity for item in cart_items)
+    return Cart.query.filter_by(user_id=user.id).count()
 
 
 def get_cart_items(user_id: int) -> list[dict[str, any]]:

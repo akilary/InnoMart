@@ -1,10 +1,22 @@
 <li>
     <article class="product-card" aria-label="Карточка товара {{ product.name }}">
         <div class="product-card__img-wrapper">
-            <img src="{{ url_for("static", filename=product.image_url) }}"
-                 alt="Фото {{ product.name }}"
-                 class="product-card__img"
-                 loading="lazy"/>
+            <img src="{{ product.image_url }}" alt="Фото {{ product.name }}"
+                 class="product-card__img" loading="lazy"/>
+
+            {% if product.in_wishlist and product.in_cart %}
+                {% set label = "В избранном и в корзине" %}
+                {% set classes = "product-card__badge product-card__badge--in-wishlist product-card__badge--in-cart" %}
+            {% elif product.in_wishlist %}
+                {% set label = "В избранном" %}
+                {% set classes = "product-card__badge product-card__badge--in-wishlist" %}
+            {% elif product.in_cart %}
+                {% set label = "В корзине" %}
+                {% set classes = "product-card__badge product-card__badge--in-cart" %}
+            {% endif %}
+            {% if label %}
+                <mark class="{{ classes }}" id="badge-{{ product.id }}" aria-label="{{ label }}">{{ label }}</mark>
+            {% endif %}
 
             {% if product.is_new %}
                 <mark class="product-card__badge product-card__badge--new" aria-label="Новинка">Новинка</mark>
@@ -18,9 +30,7 @@
                         class="product-card__action-button
                         {% if product.in_wishlist %} product-card__action-button--in-wishlist
                         {% else %} product-card__action-button--wishlist {% endif %}"
-                        data-product-id="{{ product.id }}"
-                        data-action="wishlist"
-                        aria-label="Добавить в избранное">
+                        data-product-id="{{ product.id }}" data-action="wishlist" aria-label="Добавить в избранное">
                 <span class="material-icons product-card__action-button-icon">
                     {{ "bookmark" if product.in_wishlist else "bookmark_add" }}
                 </span>
@@ -41,7 +51,6 @@
         <div class="product-card__body">
             <h3 class="product-card__title">{{ product.name }}</h3>
             <div class="product-card__category">{{ product.category }}</div>
-            <div class="product-card__text">{{ product.description | truncate(90) }}</div>
             <div class="product-card__footer">
                 <span class="product-card__price">{{ product.price }} ₸</span>
             </div>
@@ -53,3 +62,5 @@
         </div>
     </article>
 </li>
+
+

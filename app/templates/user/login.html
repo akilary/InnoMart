@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block title %}Вход - InnoMart{% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/user/auth.css") }}">
 {% endblock %}
 
 {% block content %}
@@ -56,5 +56,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ url_for("static", filename="js/auth.js") }}"></script>
+    <script type="module" src="{{ url_for("static", filename="js/user/auth.js") }}"></script>
 {% endblock %}

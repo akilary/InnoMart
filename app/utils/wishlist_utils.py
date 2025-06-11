@@ -1,3 +1,5 @@
+from sqlalchemy.orm import joinedload
+
 from .shared import get_user_by_id, get_product_by_id
 from ..extensions import db
 from ..models import Product, Wishlist
@@ -16,24 +18,19 @@ def get_wishlist_items(user_id: int) -> list[dict[str, any]]:
     wishlist_items = (
         Wishlist.query
         .filter_by(user_id=user.id)
-        .join(Product)
-        .with_entities(
-            Product.id,
-            Product.name,
-            Product.price,
-            Product.image_url,
-            Product.category,
-            Wishlist.date_added
+        .join(Wishlist.product)
+        .options(
+            joinedload(Wishlist.product).joinedload(Product.category)
         )
         .all()
     )
 
     return [{
-        "id": item.id,
-        "name": item.name,
-        "price": item.price,
-        "image_url": item.image_url,
-        "category": item.category,
+        "id": item.product.id,
+        "name": item.product.name,
+        "price": float(item.product.price),
+        "image_url": item.product.image_url,
+        "category": item.product.category.name if item.product.category else "Не определена",
         "date_added": item.date_added
     } for item in wishlist_items]
 
@@ -45,7 +42,7 @@ def add_to_wishlist(user_id: int, product_id: int) -> bool:
 
     existing_item = Wishlist.query.filter_by(user_id=user.id, product_id=product.id).first()
     if existing_item:
-        raise ValueError("Товар уже добавлен в избранное")
+        raise ValueError("Товар уже добавлен в избранном")
 
     wishlist_item = Wishlist(user_id=user.id, product_id=product.id)
     try:

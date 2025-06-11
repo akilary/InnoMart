@@ -1,0 +1,127 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Каталог - InnoMart{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/products/catalog.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/products/product_card.css") }}">
+{% endblock %}
+
+{% block page_title %}Каталог товаров{% endblock %}
+
+{% block content %}
+    <section class="catalog">
+        <div class="catalog__container">
+            <div class="catalog__search" role="search">
+                <input type="text" id="catalog-search" class="catalog__search-input" placeholder="Поиск по товарам..."
+                       aria-label="Поиск по товарам">
+            </div>
+
+            <button type="button"
+                    id="catalog-toggle-filters"
+                    class="catalog__filters-toggle-button">
+                <span class="material-icons catalog__filters-toggle-icon" aria-hidden="true">close</span>
+                <span id="toggle-text" class="catalog__filters-toggle-text">Фильтры</span>
+            </button>
+
+            <aside id="catalog-filters" class="catalog__filters" aria-hidden="false"
+                   aria-labelledby="catalog-toggle-filters">
+                <form id="filter-form" class="catalog__filter-form" aria-label="Фильтры товаров">
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title">Цена</legend>
+                        <div class="catalog__filter-price">
+                            <div class="catalog__filter-price-field">
+                                <input type="number" id="price-min" name="price_min" class="catalog__filter-price-input"
+                                       placeholder="0" min="0" aria-label="Минимальная цена">
+                            </div>
+                            <div class="catalog__filter-price-field">
+                                <input type="number" id="price-max" name="price_max" class="catalog__filter-price-input"
+                                       placeholder="999999" min="0" aria-label="Максимальная цена">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title" id="sort-heading">Сортировка</legend>
+                        <select id="filter-select" name="sort_by" class="catalog__filter-select"
+                                aria-labelledby="sort-heading" aria-label="Варианты сортировки">
+                            <option value="" selected disabled>Выберите вариант:</option>
+                            <option value="price_asc">Сначала дешевле</option>
+                            <option value="price_desc">Сначала дороже</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset class="catalog__filter">
+                        <legend class="catalog__filter-title">Наличие</legend>
+                        <div class="catalog__filter-options">
+                            <label class="catalog__filter-option">
+                                <input type="checkbox" name="in_stock" class="catalog__filter-checkbox" value="true"
+                                       aria-label="Товары в наличии">
+                                <span>В наличии</span>
+                            </label>
+                            <label class="catalog__filter-option">
+                                <input type="checkbox" name="discount" class="catalog__filter-checkbox" value="true"
+                                       aria-label="Товары со скидкой">
+                                <span>Со скидкой</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="catalog__categories">
+                        <legend class="catalog__filter-title">Категории</legend>
+                        <div class="catalog__categories-list">
+                            {% for category in categories %}
+                                <label for="category-{{ category.name }}" class="catalog__category">
+                                    <input type="checkbox" id="category-{{ category.name }}" name="categories"
+                                           class="catalog__category-checkbox" value="{{ category.name }}">
+                                    <span class="material-icons catalog__category-icon"
+                                          aria-hidden="true">{{ category.icon }}</span>
+                                    {{ category.name }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+
+                    <div class="catalog__filter-buttons">
+                        <button type="submit" id="apply-filters"
+                                class="catalog__filter-button catalog__filter-button--apply">
+                            <span class="material-icons catalog__filter-button-icon"
+                                  aria-hidden="true">filter_alt</span>
+                            Применить фильтры
+                        </button>
+                        <button type="button" id="reset-filters"
+                                class="catalog__filter-button catalog__filter-button--reset">
+                            <span class="material-icons catalog__filter-button-icon" aria-hidden="true">refresh</span>
+                            Сбросить фильтры
+                        </button>
+                        <p id="products-count" class="catalog__count">
+                            Найдено: <span class="catalog__count-number">0</span>
+                        </p>
+                    </div>
+                </form>
+            </aside>
+
+            <div class="catalog__cards-wrapper">
+                <div id="catalog-loader" class="catalog__loader catalog__loader--hidden" role="status">
+                    <span class="catalog__loader-spinner" aria-hidden="true"></span>
+                    <span>Загрузка товаров...</span>
+                </div>
+                <ul id="products-container" class="catalog__cards" role="list" aria-label="Список товаров">
+
+                </ul>
+            </div>
+
+            <div class="catalog__load-more">
+                <button type="button" id="load-more" class="catalog__load-more-button catalog__load-more-button--show"
+                        aria-label="Загрузить больше товаров">
+                    <span class="material-icons catalog__load-more-button-icon" aria-hidden="true">expand_more</span>
+                    Загрузить ещё
+                </button>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="module" src="{{ url_for("static", filename="js/products/catalog.js") }}"></script>
+{% endblock %}
